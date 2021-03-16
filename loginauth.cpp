@@ -13,8 +13,6 @@ LoginAuth::LoginAuth(QWidget *parent) :
     // Hide the failed Authentication text until at least one attempt has been made
     ui->FailedAuth->hide();
 
-    //
-
     // QPalette is used to change the color of the text in FailedAuth label to RED
     QPalette palette = ui->FailedAuth->palette();
     palette.setColor(ui->FailedAuth->backgroundRole(), Qt::red);
@@ -37,8 +35,12 @@ void LoginAuth::on_LoginButton_clicked()
      * User with their dashboard.
      */
 
+    // Extract input text and clear the text fields
     QString username = ui->UsernameField->text();
     QString password = ui->PasswordField->text();
+    ui->PasswordField->clear();
+    ui->UsernameField->clear();
+
     /*
      *  sql.query(username.password)
      *  password == username.password ?
@@ -53,8 +55,6 @@ void LoginAuth::on_LoginButton_clicked()
      *  For developmental logins only
      *  Remove for release
      */
-    ui->PasswordField->clear();
-    ui->UsernameField->clear();
 
     if(username == "dev" && password == "dev") {
         // Create QWidget for the DashBoard window
