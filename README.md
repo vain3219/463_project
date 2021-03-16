@@ -1,5 +1,5 @@
 # 463_project
-A project for Rodgers 463 Software Testing class at CSUF using QT.  
+A project for Rodgers 463 Software Testing class at CSUF using QT and SQLite Database.  
 
 
 ## ER Model
