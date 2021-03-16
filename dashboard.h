@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class DashBoard; }
 QT_END_NAMESPACE
@@ -14,6 +15,9 @@ class DashBoard : public QMainWindow
 public:
     DashBoard(QWidget *parent = nullptr);
     ~DashBoard();
+
+private slots:
+    void on_LogoutButton_clicked();
 
 private:
     Ui::DashBoard *ui;

@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QAbstractButton>
-#include "dashboard.h"
 
 namespace Ui {
 class LoginAuth;
@@ -18,11 +17,12 @@ public:
     ~LoginAuth();
 
 private slots:
-    void on_LoginButton_clicked(QAbstractButton *button);
+    void on_LoginButton_clicked();
+
+    void on_ExitButton_clicked();
 
 private:
     Ui::LoginAuth *ui;
-    DashBoard *loadMeDaddy;
 };
 
 #endif // LOGINAUTH_H

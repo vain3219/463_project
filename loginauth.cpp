@@ -1,14 +1,18 @@
 #include "loginauth.h"
 #include "ui_loginauth.h"
+#include "dashboard.h"
 
 LoginAuth::LoginAuth(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::LoginAuth),
-    loadMeDaddy(new DashBoard)
+    ui(new Ui::LoginAuth)
 {
     // Nothing before this line
     ui->setupUi(this);
+    // Change the window title
+    this->setWindowTitle("Login Authentication");
+    // Hide the failed Authentication text until at least one attempt has been made
     ui->FailedAuth->hide();
+
     //
 
     // QPalette is used to change the color of the text in FailedAuth label to RED
@@ -24,7 +28,7 @@ LoginAuth::~LoginAuth()
     delete ui;
 }
 
-void LoginAuth::on_LoginButton_clicked(QAbstractButton *button)
+void LoginAuth::on_LoginButton_clicked()
 {
     /*
      * This function is responsible for authenticating the presented Username and Password.
@@ -38,7 +42,7 @@ void LoginAuth::on_LoginButton_clicked(QAbstractButton *button)
     /*
      *  sql.query(username.password)
      *  password == username.password ?
-     *      loadDashboard() ;
+     *      loadDashboard()
      *    else
      *      clear fields && present login failed message
      */
@@ -49,17 +53,23 @@ void LoginAuth::on_LoginButton_clicked(QAbstractButton *button)
      *  For developmental logins only
      *  Remove for release
      */
+    ui->PasswordField->clear();
+    ui->UsernameField->clear();
 
     if(username == "dev" && password == "dev") {
-        // Load dashboard
-
-        ui->PasswordField->clear();
-        ui->UsernameField->clear();
+        // Create QWidget for the DashBoard window
+        DashBoard *loadMeDaddy = new DashBoard;
+        // Load dashboard and hide login window
         loadMeDaddy->show();
-        ui->~LoginAuth();
+        // Close this window ;; If this is the only window, the program will terminate
+        this->close();
     } else {
-        ui->PasswordField->clear();
-        ui->UsernameField->clear();
+        // Show Failed Authentication text
         ui->FailedAuth->show();
     }
+}
+
+void LoginAuth::on_ExitButton_clicked()
+{
+    this->close();
 }

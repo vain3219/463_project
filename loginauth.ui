@@ -11,24 +11,8 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Login Authentication</string>
   </property>
-  <widget class="QDialogButtonBox" name="LoginButton">
-   <property name="geometry">
-    <rect>
-     <x>-60</x>
-     <y>120</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="UsernameField">
    <property name="geometry">
     <rect>
@@ -37,6 +21,9 @@
      <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="placeholderText">
+    <string>Username</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="PasswordField">
@@ -48,15 +35,30 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="inputMask">
+    <string/>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
+   <property name="placeholderText">
+    <string>Password</string>
+   </property>
   </widget>
   <widget class="QLabel" name="WindowLabel">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>140</x>
      <y>20</y>
-     <width>101</width>
+     <width>121</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="text">
     <string>Login Authentication</string>
@@ -91,50 +93,49 @@
   <widget class="QLabel" name="FailedAuth">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>110</x>
      <y>150</y>
-     <width>161</width>
+     <width>191</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="text">
     <string>Authentication failed.  Try again.</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="LoginButton">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>120</y>
+     <width>80</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Login</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ExitButton">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>120</y>
+     <width>80</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>LoginButton</sender>
-   <signal>accepted()</signal>
-   <receiver>LoginAuth</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>LoginButton</sender>
-   <signal>rejected()</signal>
-   <receiver>LoginAuth</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
