@@ -2,6 +2,7 @@
 #include "ui_dashboard.h"
 #include "loginauth.h"
 
+
 DashBoard::DashBoard(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::DashBoard)
@@ -19,19 +20,21 @@ DashBoard::DashBoard(QWidget *parent)
     ui->DatabaseLoadError->setPalette(palette);
     //
 
+    // Establish connection with SQLite Database
+    DbManager db("Antares Management Database.db");
+
     // Attempt to populate the DataTable
     //  If the DataTable can't be populated, display error text
-//    if( !PopulateDataTable() ) {
-//        ui->DataTable->hide();
-//        ui->DatabaseLoadError->show();
-//    }
+    if( !PopulateDataTable(db) ) {
+        ui->DataTable->hide();
+        ui->DatabaseLoadError->show();
+    }
 }
 
 DashBoard::~DashBoard()
 {
     delete ui;
 }
-
 
 void DashBoard::on_LogoutButton_clicked()
 {
@@ -40,12 +43,58 @@ void DashBoard::on_LogoutButton_clicked()
     this->close();
 }
 
-bool DashBoard::PopulateDataTable() {
-    return false;
-}
-
-
 void DashBoard::on_SearchButton_clicked()
 {
-    // This function is activated when the SearchButton is pressed & released
+    ui->stackedWidget->setCurrentWidget(ui->SearchPage);
+}
+
+void DashBoard::on_DailyButton_clicked()
+{
+    setDisplayPage();
+}
+
+void DashBoard::on_GuestsButton_clicked()
+{
+    setDisplayPage();
+}
+
+void DashBoard::on_HousekeepingButton_clicked()
+{
+    setDisplayPage();
+}
+
+void DashBoard::on_InfoButton_clicked()
+{
+    setDisplayPage();
+}
+
+void DashBoard::on_ReservationButton_clicked()
+{
+    setDisplayPage();
+}
+
+void DashBoard::on_RoomsButton_clicked()
+{
+    setDisplayPage();
+}
+
+void DashBoard::on_WeeklyButton_clicked()
+{
+    setDisplayPage();
+}
+
+void DashBoard::on_SubmitButon_clicked()
+{
+    setDisplayPage();
+}
+
+bool DashBoard::PopulateDataTable(DbManager db)
+{
+    return db.isOpen();
+}
+
+void DashBoard::setDisplayPage() {
+    if(ui->stackedWidget->currentIndex() == 1) {
+            ui->stackedWidget->setCurrentWidget(ui->DisplayPage);
+    }
 }

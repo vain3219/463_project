@@ -20,103 +20,15 @@
       <x>0</x>
       <y>-20</y>
       <width>801</width>
-      <height>601</height>
+      <height>501</height>
      </rect>
     </property>
-    <widget class="QWidget" name="page">
-     <widget class="QPushButton" name="pushButton_6">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>530</y>
-        <width>80</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="SearchButton">
-      <property name="geometry">
-       <rect>
-        <x>610</x>
-        <y>440</y>
-        <width>80</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Search</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="LogoutButton">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>540</y>
-        <width>80</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Logout</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_8">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>530</y>
-        <width>80</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_9">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>490</y>
-        <width>80</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>490</y>
-        <width>80</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="SearchField">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>440</y>
-        <width>551</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
+    <widget class="QWidget" name="DisplayPage">
      <widget class="QTableView" name="DataTable">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>30</y>
+        <y>40</y>
         <width>751</width>
         <height>401</height>
        </rect>
@@ -142,7 +54,158 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_2"/>
+    <widget class="QWidget" name="SearchPage">
+     <widget class="QLineEdit" name="SearchField">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>460</y>
+        <width>621</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="SubmitButon">
+      <property name="geometry">
+       <rect>
+        <x>669</x>
+        <y>460</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Submit</string>
+      </property>
+     </widget>
+     <widget class="QTableView" name="SearchTable">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>751</width>
+        <height>401</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="InfoButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>530</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Guest Info</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="GuestsButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>500</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Guests</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="RoomsButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>500</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Rooms and Status</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="WeeklyButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>530</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weekly Residence</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ReservationButton">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>500</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reservations</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="HousekeepingButton">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>530</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Housekeeping</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LogoutButton">
+    <property name="geometry">
+     <rect>
+      <x>669</x>
+      <y>530</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Logout</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SearchButton">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>530</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Search</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DailyButton">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>500</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Daily Report</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
