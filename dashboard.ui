@@ -37,7 +37,7 @@
        <string>PushButton</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_7">
+     <widget class="QPushButton" name="SearchButton">
       <property name="geometry">
        <rect>
         <x>610</x>
@@ -47,7 +47,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>PushButton</string>
+       <string>Search</string>
       </property>
      </widget>
      <widget class="QPushButton" name="LogoutButton">
@@ -120,6 +120,25 @@
         <width>751</width>
         <height>401</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="DatabaseLoadError">
+      <property name="geometry">
+       <rect>
+        <x>206</x>
+        <y>260</y>
+        <width>371</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>The Database has encountered an error, please logout and try again.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>

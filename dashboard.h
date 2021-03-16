@@ -19,7 +19,13 @@ public:
 private slots:
     void on_LogoutButton_clicked();
 
+    void on_SearchButton_clicked();
+
 private:
     Ui::DashBoard *ui;
+
+    // Populate the DataTable with data from database
+    //  Return false on invalid query
+    bool PopulateDataTable();
 };
 #endif // DASHBOARD_H
