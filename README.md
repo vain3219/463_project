@@ -19,17 +19,17 @@ The below capabillities will be spilt evenly amongst team members.  Pick two cap
 
 ### Capabillity 1
 This screen will show all the rooms of the hotel.  The rooms will have the room number, room type, and status.  
-The following are possible status for the rooms.
-                * Available
-                * Unavailable/Occupied
-                * Unavailable/Dirty
-                * Unavailable/Maintenance
-The following are the type of rooms available:
-                * King (K)
-                * Double Queen (DQ)
-                * Double Queen with Kitchen (DQK)
-                * Suite (S)
+#### The following are possible status for the rooms.
+* Available
+* Unavailable/Occupied
+* Unavailable/Dirty
+* Unavailable/Maintenance
 
+#### The following are the type of rooms available:
+* King (K)
+* Double Queen (DQ)
+* Double Queen with Kitchen (DQK)
+* Suite (S)
 
 ### Capabillity 2
 This screen will have a list of the room going down vertically and the next 7 days going across horizontally.  If the room is reserved for that day, it will have the guests name.  If it is not reserved, it will be blank.
