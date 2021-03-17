@@ -42,18 +42,11 @@ void LoginAuth::on_LoginButton_clicked()
     ui->UsernameField->clear();
 
     /*
-     *  sql.query(username.password)
-     *  password == username.password ?
-     *      loadDashboard()
-     *    else
-     *      clear fields && present login failed message
-     */
-
-    /*
      *  Hard coded values for easy development logins
      *  Developmental login info : Username "dev" & Password "dev"
      *  For developmental logins only
      *  Remove for release
+     *  Do we want a database for username/password??
      */
 
     if(username == "dev" && password == "dev") {

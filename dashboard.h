@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "DbManager.h"
+#include "reservations.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DashBoard; }
@@ -37,6 +38,8 @@ private slots:
 
     void on_SubmitButon_clicked();
 
+    void on_MakeResButton_clicked();
+
 private:
     Ui::DashBoard *ui;
 
@@ -44,6 +47,9 @@ private:
     //  Return false on invalid query
     bool PopulateDataTable(DbManager db);
 
-    void setDisplayPage();
+    // Used to set the stacked widget to a blank space for all buttons
+    //  except for the Reservations button and the search button as these
+    //  requirements need additional GUI elements
+    void setBlankPage();
 };
 #endif // DASHBOARD_H

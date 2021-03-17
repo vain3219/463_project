@@ -12,16 +12,19 @@ CONFIG += c++11
 SOURCES += \
     loginauth.cpp \
     main.cpp \
-    dashboard.cpp
+    dashboard.cpp \
+    reservations.cpp
 
 HEADERS += \
     DbManager.h \
     dashboard.h \
-    loginauth.h
+    loginauth.h \
+    reservations.h
 
 FORMS += \
     dashboard.ui \
-    loginauth.ui
+    loginauth.ui \
+    reservations.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
