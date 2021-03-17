@@ -32,6 +32,18 @@ public:
         return m_db.isOpen();
     };
 
+    bool closeDB() {
+        m_db.close();
+        return isOpen();
+    }
+
+    bool openDB() {
+        if(!isOpen()) {
+            m_db.open();
+        }
+        return isOpen();
+    }
+
 private:
     QSqlDatabase m_db;
 };

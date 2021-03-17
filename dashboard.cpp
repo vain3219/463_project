@@ -101,6 +101,8 @@ void DashBoard::on_MakeResButton_clicked()
 {
    // Create new form object and display the window
    Reservations* loadMe = new Reservations;
+   // Disable window resizing
+   loadMe->setFixedSize(loadMe->size());
    loadMe->show();
 }
 

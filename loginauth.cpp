@@ -52,6 +52,8 @@ void LoginAuth::on_LoginButton_clicked()
     if(username == "dev" && password == "dev") {
         // Create QWidget for the DashBoard window
         DashBoard *loadMeDaddy = new DashBoard;
+        // Disable window resizing
+        loadMeDaddy->setFixedSize(loadMeDaddy->size());
         // Load dashboard and hide login window
         loadMeDaddy->show();
         // Close this window ;; If this is the only window, the program will terminate

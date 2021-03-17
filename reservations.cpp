@@ -19,10 +19,25 @@ Reservations::~Reservations()
 void Reservations::on_ConfirmButton_clicked()
 {
     // Do text extraction from input fields here
+     QString FName = ui->FNameField->text();
+     QString LName = ui->LNameField->text();
+     QString CheckIn = ui->CheckInField->text();
+     QString Checkout = ui->CheckoutField->text();
+     QString Phone = ui->PhoneField->text();
+     QString Address = ui->AddressField->text();
+     QString Email = ui->EmailField->text();
+     QString IDNum = ui->IDNumField->text();
+     QString IDState = ui->IDStateField->text();
+     QString LicensePlate = ui->LicensePlateField->text();
 
+    // Create query String
+    QString insertQuery = "INSERT INTO RESERVATIONS VALUES ("
+        + FName + ","
+        + LName + ","
+        /* ... */
+        + LicensePlate + ");";
 
-    // Do query to insert the new reservation here
-
+    // Execute Query
 
     // Close the window after successful query
     this->close();
