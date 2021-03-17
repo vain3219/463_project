@@ -35,7 +35,7 @@ This screen will show all the rooms of the hotel.  The rooms will have the room 
 This screen will have a list of the room going down vertically and the next 7 days going across horizontally.  If the room is reserved for that day, it will have the guests name.  If it is not reserved, it will be blank.
 
 ### Capabillity 3
-This list display will show each current reservation with the following information:  Guest First Name, Guest Last Name, Date Made,  Date Checkin,  Date Checkout,  Room Type,  Rate ($/Day), Total Charge
+This is a screen is to make reservations to the hotel.  This list display will show each current reservation with the following information:  Guest First Name, Guest Last Name, Date Made,  Date Checkin,  Date Checkout,  Room Type,  Rate ($/Day), Total Charge
 
 ### Capabillity 4
 This screen shows a list of all the dirty rooms.  It has the following information for each room: Housekeeper Name, Room number, Room Type, Room Status, Bathroom,  Towels, Bed Sheets, Vacuum, Dusting, Electronics.  
