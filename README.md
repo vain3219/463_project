@@ -17,7 +17,7 @@ I have been using MinGW as the compiler; seems to work fine.
 # SQL Logic for Capabillities
 The below capabillities will be spilt evenly amongst team members.  Pick two capabillities you would like to implement by editing this document and inserting your name after the capability number (e.g. Capabillity n -- John Smith).  Most, but not all, will involve SQL logic.  Develop your logic and insert it below your capabillities description.
 
-### Capabillity 1 Tracy
+### Capabillity 1 -- Tracy Tonnu
 This screen will show all the rooms of the hotel.  The rooms will have the room number, room type, and status.  
 #### The following are possible status for the rooms.
 * Available
@@ -31,13 +31,13 @@ This screen will show all the rooms of the hotel.  The rooms will have the room 
 * Double Queen with Kitchen (DQK)
 * Suite (S)
 
-### Capabillity 2 Tracy
+### Capabillity 2 -- Tracy Tonnu
 This screen will have a list of the room going down vertically and the next 7 days going across horizontally.  If the room is reserved for that day, it will have the guests name.  If it is not reserved, it will be blank.
 
-### Capabillity 3
+### Capabillity 3 -- Grant Marsh
 This is a screen is to make reservations to the hotel.  This list display will show each current reservation with the following information:  Guest First Name, Guest Last Name, Date Made,  Date Checkin,  Date Checkout,  Room Type,  Rate ($/Day), Total Charge
 
-### Capabillity 4
+### Capabillity 4 -- Grant Marsh
 This screen shows a list of all the dirty rooms.  It has the following information for each room: Housekeeper Name, Room number, Room Type, Room Status, Bathroom,  Towels, Bed Sheets, Vacuum, Dusting, Electronics.  
 
 ### Capabillity 5
