@@ -47,8 +47,8 @@ If using a GUI, a photo of the guest or photo of ID.
 ### Capabillity 6
 This screen will show the room/guest current stay information.  It will contain the following information:  Guest Name, Check In Date and Time, Expected Check Out Date and Time,  Room Type, Room Number, Room Rate ($/Day), Total Charge, Payments Made, Balance.
 
-### Capabillity 7
+### Capabillity 7 -- Cody Thompson
 This screen will allow the user to search for a guest using any of the following fields: Guest First Name, Guest Last Name, Room Number, Phone Number, Street Address, Check In Date, Checkout Date.
 
-### Capabillity 8
+### Capabillity 8 -- Cody Thompson
 This screen will show a report of the day’s activity.  It will show a list of rooms that were rented that day and also have the following information for each room: Room Number, Guest Name, Date In, Date Out (If Checked Out), Amount Paid for the room. At the bottom will be a total of dollars paid for rooms that day.
