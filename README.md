@@ -20,10 +20,10 @@ The below capabillities will be spilt evenly amongst team members.  Pick two cap
 ### Capabillity 1 -- Tracy Tonnu
 This screen will show all the rooms of the hotel.  The rooms will have the room number, room type, and status.  
 #### The following are possible status for the rooms.
-* Available
-* Unavailable/Occupied
-* Unavailable/Dirty
-* Unavailable/Maintenance
+* Available -- Green
+* Unavailable/Occupied -- Red
+* Unavailable/Dirty -- Yellow
+* Unavailable/Maintenance -- Orange
 
 #### The following are the type of rooms available:
 * King (K)
