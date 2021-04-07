@@ -40,11 +40,11 @@ This is a screen is to make reservations to the hotel.  This list display will s
 ### Capabillity 4 -- Grant Marsh
 This screen shows a list of all the dirty rooms.  It has the following information for each room: Housekeeper Name, Room number, Room Type, Room Status, Bathroom,  Towels, Bed Sheets, Vacuum, Dusting, Electronics.  
 
-### Capabillity 5
+### Capabillity 5 -- Kevin
 This screen will show the guest profile information.  It will include the following information: First Name, Last Name, Phone, Address, E-mail,  ID Info (State, ID#), Vehicle License Plate.
 If using a GUI, a photo of the guest or photo of ID.
 
-### Capabillity 6
+### Capabillity 6 -- Kevin
 This screen will show the room/guest current stay information.  It will contain the following information:  Guest Name, Check In Date and Time, Expected Check Out Date and Time,  Room Type, Room Number, Room Rate ($/Day), Total Charge, Payments Made, Balance.
 
 ### Capabillity 7 -- Cody Thompson
