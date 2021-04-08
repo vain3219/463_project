@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: grey</string>
+  </property>
   <widget class="QPushButton" name="ConfirmButton">
    <property name="geometry">
     <rect>
@@ -35,6 +38,9 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="FNameField">
    <property name="geometry">
@@ -44,6 +50,9 @@
      <width>171</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_10">
@@ -67,6 +76,9 @@
      <width>171</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -140,6 +152,9 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
+   </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
@@ -176,6 +191,9 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="LNameField">
    <property name="geometry">
@@ -185,6 +203,9 @@
      <width>181</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -222,6 +243,9 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="IDNumField">
    <property name="geometry">
@@ -231,6 +255,9 @@
      <width>181</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_8">
@@ -281,6 +308,9 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="IDStateField">
    <property name="geometry">
@@ -290,6 +320,9 @@
      <width>181</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
    </property>
   </widget>
  </widget>

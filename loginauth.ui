@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Login Authentication</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: grey</string>
+  </property>
   <widget class="QLineEdit" name="UsernameField">
    <property name="geometry">
     <rect>
@@ -21,6 +24,9 @@
      <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
    </property>
    <property name="placeholderText">
     <string>Username</string>
@@ -34,6 +40,9 @@
      <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #999999</string>
    </property>
    <property name="inputMask">
     <string/>
