@@ -4,13 +4,13 @@ A project for Rodgers 463 Software Testing class at CSUF using QT and SQLite Dat
 
 ## ER Model
 
-![ER Model Concept](ERModel1.JPG)
+![ER Model Concept](Images/ERModel1.JPG)
 
 https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1#G15Pqxo8ypeWOY4yfjMoBBQ4i1x547UwDE
 
 ## Setting kits and compilers
 
-![QT Compilers](QTCompile.JPG)
+![QT Compilers](Images/QTCompile.JPG)
 
 I have been using MinGW as the compiler; seems to work fine.
 
@@ -20,10 +20,10 @@ The below capabillities will be spilt evenly amongst team members.  Pick two cap
 ### Capabillity 1 -- Tracy Tonnu
 This screen will show all the rooms of the hotel.  The rooms will have the room number, room type, and status.  
 #### The following are possible status for the rooms.
-* Available
-* Unavailable/Occupied
-* Unavailable/Dirty
-* Unavailable/Maintenance
+* Available -- Green
+* Unavailable/Occupied -- Red
+* Unavailable/Dirty -- Yellow
+* Unavailable/Maintenance -- Orange
 
 #### The following are the type of rooms available:
 * King (K)
@@ -40,11 +40,11 @@ This is a screen is to make reservations to the hotel.  This list display will s
 ### Capabillity 4 -- Grant Marsh
 This screen shows a list of all the dirty rooms.  It has the following information for each room: Housekeeper Name, Room number, Room Type, Room Status, Bathroom,  Towels, Bed Sheets, Vacuum, Dusting, Electronics.  
 
-### Capabillity 5
+### Capabillity 5 -- Kevin
 This screen will show the guest profile information.  It will include the following information: First Name, Last Name, Phone, Address, E-mail,  ID Info (State, ID#), Vehicle License Plate.
 If using a GUI, a photo of the guest or photo of ID.
 
-### Capabillity 6
+### Capabillity 6 -- Kevin
 This screen will show the room/guest current stay information.  It will contain the following information:  Guest Name, Check In Date and Time, Expected Check Out Date and Time,  Room Type, Room Number, Room Rate ($/Day), Total Charge, Payments Made, Balance.
 
 ### Capabillity 7 -- Cody Thompson
