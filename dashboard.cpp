@@ -25,7 +25,7 @@ DashBoard::DashBoard(QWidget *parent)
     //
 
     // Establish connection with SQLite Database
-    DbManager db("Antares Management Database.db");
+    DbManager db("AntaresRDB.db");
 
     // Attempt to populate the DataTable
     //  If the DataTable can't be populated, display error text
