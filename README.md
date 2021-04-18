@@ -20,16 +20,18 @@ The below capabillities will be spilt evenly amongst team members.  Pick two cap
 ### Capabillity 1 -- Tracy Tonnu
 This screen will show all the rooms of the hotel.  The rooms will have the room number, room type, and status.  
 #### The following are possible status for the rooms.
-* Available -- Green
-* Unavailable/Occupied -- Red
-* Unavailable/Dirty -- Yellow
-* Unavailable/Maintenance -- Orange
+(Enumerated)                                  n
+* Available -- Green                          0       
+* Unavailable/Occupied -- Red                 1
+* Unavailable/Dirty -- Yellow                 2
+* Unavailable/Maintenance -- Orange           3
 
 #### The following are the type of rooms available:
-* King (K)
-* Double Queen (DQ)
-* Double Queen with Kitchen (DQK)
-* Suite (S)
+(Enumerated)                                  n
+* King (K)                                    3
+* Double Queen with Kitchen (DQK)             2
+* Double Queen (DQ)                           1
+* Suite (S)                                   0
 
 ### Capabillity 2 -- Tracy Tonnu
 This screen will have a list of the room going down vertically and the next 7 days going across horizontally.  If the room is reserved for that day, it will have the guests name.  If it is not reserved, it will be blank.
