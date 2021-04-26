@@ -92,14 +92,14 @@ void DashBoard::on_HousekeepingButton_clicked()
 {
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("SELECT * FROM CUSTOMER");
+    updateTable("SELECT * FROM Customer");
 }
 
 void DashBoard::on_InfoButton_clicked()
 {
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("SELECT * FROM CUSTOMER");
+    updateTable("SELECT * FROM Customer");
 }
 
 void DashBoard::on_ReservationButton_clicked()
@@ -123,13 +123,13 @@ void DashBoard::on_WeeklyButton_clicked()
 {
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("SELECT * FROM CUSTOMER");
+    updateTable("SELECT * FROM Customer");
 }
 
 void DashBoard::on_SubmitButon_clicked()
 {
     // Execute SQL search query here
-    updateTable("SELECT * FROM CUSTOMER");
+    updateTable("SELECT * FROM Customer");
 }
 
 void DashBoard::on_MakeResButton_clicked()

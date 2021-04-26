@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1205</width>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,8 @@
    <widget class="QPushButton" name="InfoButton">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>530</y>
+      <x>311</x>
+      <y>690</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -33,8 +33,8 @@
    <widget class="QPushButton" name="GuestsButton">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>500</y>
+      <x>311</x>
+      <y>660</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -46,8 +46,8 @@
    <widget class="QPushButton" name="RoomsButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>500</y>
+      <x>71</x>
+      <y>660</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -59,8 +59,8 @@
    <widget class="QPushButton" name="WeeklyButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>530</y>
+      <x>71</x>
+      <y>690</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -72,8 +72,8 @@
    <widget class="QPushButton" name="ReservationButton">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>500</y>
+      <x>191</x>
+      <y>660</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -85,8 +85,8 @@
    <widget class="QPushButton" name="HousekeepingButton">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>530</y>
+      <x>191</x>
+      <y>690</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -98,8 +98,8 @@
    <widget class="QPushButton" name="LogoutButton">
     <property name="geometry">
      <rect>
-      <x>669</x>
-      <y>530</y>
+      <x>1030</x>
+      <y>690</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -111,8 +111,8 @@
    <widget class="QPushButton" name="SearchButton">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>530</y>
+      <x>431</x>
+      <y>690</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -124,8 +124,8 @@
    <widget class="QPushButton" name="DailyButton">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>500</y>
+      <x>431</x>
+      <y>660</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -156,24 +156,24 @@
    <widget class="QStackedWidget" name="stackedWidgetRDB">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>751</width>
-      <height>481</height>
+      <x>0</x>
+      <y>-20</y>
+      <width>1201</width>
+      <height>681</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="RoomStatusPage">
      <widget class="QPushButton" name="RoomButton_10">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>60</y>
+        <x>280</x>
+        <y>120</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -185,8 +185,8 @@
      <widget class="QPushButton" name="RoomButton_11">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>110</y>
+        <x>280</x>
+        <y>170</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -198,8 +198,8 @@
      <widget class="QPushButton" name="RoomButton_12">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>160</y>
+        <x>280</x>
+        <y>220</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -211,8 +211,8 @@
      <widget class="QPushButton" name="RoomButton_13">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>210</y>
+        <x>280</x>
+        <y>270</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -224,8 +224,8 @@
      <widget class="QPushButton" name="RoomButton_14">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>260</y>
+        <x>280</x>
+        <y>320</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -237,8 +237,8 @@
      <widget class="QPushButton" name="RoomButton_15">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>60</y>
+        <x>520</x>
+        <y>120</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -250,8 +250,8 @@
      <widget class="QPushButton" name="RoomButton_16">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>110</y>
+        <x>520</x>
+        <y>170</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -263,8 +263,8 @@
      <widget class="QPushButton" name="RoomButton_17">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>160</y>
+        <x>520</x>
+        <y>220</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -276,8 +276,8 @@
      <widget class="QPushButton" name="RoomButton_18">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>210</y>
+        <x>520</x>
+        <y>270</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -289,8 +289,8 @@
      <widget class="QPushButton" name="RoomButton_19">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>260</y>
+        <x>520</x>
+        <y>320</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -302,8 +302,8 @@
      <widget class="QPushButton" name="RoomButton_20">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>60</y>
+        <x>760</x>
+        <y>120</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -315,8 +315,8 @@
      <widget class="QPushButton" name="RoomButton_21">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>110</y>
+        <x>760</x>
+        <y>170</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -328,8 +328,8 @@
      <widget class="QPushButton" name="RoomButton_22">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>160</y>
+        <x>760</x>
+        <y>220</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -341,8 +341,8 @@
      <widget class="QPushButton" name="RoomButton_23">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>210</y>
+        <x>760</x>
+        <y>270</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -354,8 +354,8 @@
      <widget class="QPushButton" name="RoomButton_24">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>260</y>
+        <x>760</x>
+        <y>320</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -367,10 +367,10 @@
      <widget class="QTextEdit" name="textEdit">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>310</y>
-        <width>641</width>
-        <height>161</height>
+        <x>70</x>
+        <y>430</y>
+        <width>1071</width>
+        <height>241</height>
        </rect>
       </property>
       <property name="cursor" stdset="0">
@@ -394,10 +394,10 @@
      <widget class="QTableView" name="DataTable">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>751</width>
-        <height>401</height>
+        <x>10</x>
+        <y>30</y>
+        <width>1181</width>
+        <height>571</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -407,8 +407,8 @@
      <widget class="QStackedWidget" name="stackedWidgetSR">
       <property name="geometry">
        <rect>
-        <x>-20</x>
-        <y>410</y>
+        <x>200</x>
+        <y>590</y>
         <width>801</width>
         <height>81</height>
        </rect>
@@ -461,6 +461,8 @@
        </widget>
       </widget>
      </widget>
+     <zorder>stackedWidgetSR</zorder>
+     <zorder>DataTable</zorder>
     </widget>
    </widget>
   </widget>
@@ -469,7 +471,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1205</width>
      <height>20</height>
     </rect>
    </property>
