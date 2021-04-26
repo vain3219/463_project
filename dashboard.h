@@ -5,10 +5,22 @@
 #include "DbManager.h"
 #include "reservations.h"
 #include <cmath>
+#include <QTableWidget>
+#include <QSqlDatabase>
+#include <QSqlQueryModel>
+#include <QDebug>
+#include <QSqlError>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DashBoard; }
 QT_END_NAMESPACE
+
+enum roomType {
+    SUITE,
+    DOUBLE_QUEEN,
+    DOUBLE_QUEEN_KITCHEN,
+    KING
+};
 
 enum roomStatus {
     AVAILABLE,
@@ -48,6 +60,7 @@ private slots:
 
     void on_MakeResButton_clicked();
 
+    // Room status buttons for Capabillity one
     void on_RoomButton_10_clicked();
 
     void on_RoomButton_11_clicked();
@@ -77,13 +90,15 @@ private slots:
     void on_RoomButton_23_clicked();
 
     void on_RoomButton_24_clicked();
+    //
 
 private:
     Ui::DashBoard *ui;
+    //DbManager* db;
+    QSqlDatabase db;
 
-    // Populate the DataTable with data from database
-    //  Return false on invalid query
-    bool PopulateDataTable(DbManager db);
+    // Databse initialization
+    bool databaseInit();
 
     // Used to set the stacked widget to a blank space for all buttons
     //  except for the Reservations button and the search button as these
@@ -107,5 +122,8 @@ private:
     // Sets the text of the Text Edit field for the respective room button.  This displays
     //  detailed information on the rooms status.
     void setRoomDetails(int roomNumber, QPushButton* button);
+
+    // Use this function to update the tableView widget with the data from your SQL query
+    void updateTable(QString);
 };
 #endif // DASHBOARD_H

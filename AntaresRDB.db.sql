@@ -1,0 +1,80 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "Customer" (
+	"CusID"	INTEGER NOT NULL UNIQUE,
+	"FName"	TEXT,
+	"LName"	TEXT,
+	"IDNum"	TEXT,
+	"IDState"	TEXT,
+	"LicensePlate"	TEXT,
+	"Address"	TEXT,
+	"Phone"	TEXT,
+	"Email"	TEXT,
+	PRIMARY KEY("CusID" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "RoomTypes" (
+	"Type"	INTEGER UNIQUE,
+	"Rate"	REAL,
+	PRIMARY KEY("Type")
+);
+CREATE TABLE IF NOT EXISTS "Reservations" (
+	"ResID"	INTEGER NOT NULL UNIQUE,
+	"DateMade"	TEXT,
+	"CheckIn"	TEXT,
+	"Checkout"	TEXT,
+	"RoomType"	INTEGER,
+	"CusID"	INTEGER,
+	FOREIGN KEY("CusID") REFERENCES "Customer"("CusID"),
+	FOREIGN KEY("RoomType") REFERENCES "RoomTypes"("Type"),
+	PRIMARY KEY("ResID" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "Housekeeping" (
+	"RoomID"	NUMERIC NOT NULL UNIQUE,
+	"Keeper"	TEXT,
+	"Bathroom"	INTEGER,
+	"Towels"	INTEGER,
+	"Vacuum"	INTEGER,
+	"Dusting"	INTEGER,
+	"Electronics"	INTEGER,
+	FOREIGN KEY("RoomID") REFERENCES "Rooms"("RoomID"),
+	PRIMARY KEY("RoomID")
+);
+CREATE TABLE IF NOT EXISTS "Payments" (
+	"CusID"	INTEGER,
+	"Payments"	REAL,
+	"Balance"	REAL,
+	FOREIGN KEY("CusID") REFERENCES "Customer"("CusID")
+);
+CREATE TABLE IF NOT EXISTS "Rooms" (
+	"RoomID"	INTEGER UNIQUE,
+	"Type"	INTEGER,
+	"Status"	INTEGER,
+	FOREIGN KEY("Type") REFERENCES "RoomTypes"("Type"),
+	PRIMARY KEY("RoomID")
+);
+INSERT INTO "Customer" VALUES (1,'Cody','Thompson','F1728364','Ca','LW4X576','123 Not Me Way','(949)182-4490','lolthis@email.com');
+INSERT INTO "Customer" VALUES (2,'Tracy','Tonnu','F1445724','Ca','L45WT76','123 Go Away Drive','(949)884-5510','ttonnu@lol.net');
+INSERT INTO "Customer" VALUES (3,'Grant','Marsh','F5421869','Ca','T99GH45','123 Not Here Ave','(949)464-5887','gmarsh@t500.org');
+INSERT INTO "Customer" VALUES (4,'Kevin','Chen','F4577313','Ca','WXF45G11','123 Somewhere Else Pkwy','(949)888-1012','kchen@reeee.edu');
+INSERT INTO "RoomTypes" VALUES (0,75.99);
+INSERT INTO "RoomTypes" VALUES (1,119.99);
+INSERT INTO "RoomTypes" VALUES (2,149.99);
+INSERT INTO "RoomTypes" VALUES (3,249.99);
+INSERT INTO "Reservations" VALUES (100,'2021-04-17','2021-05-24','2021-05-29',3,1);
+INSERT INTO "Reservations" VALUES (101,'2021-04-20','2021-05-24','2021-05-27',2,2);
+INSERT INTO "Reservations" VALUES (102,'2021-04-16','2021-05-23','2021-05-27',1,2);
+INSERT INTO "Rooms" VALUES (10,0,0);
+INSERT INTO "Rooms" VALUES (11,0,0);
+INSERT INTO "Rooms" VALUES (12,0,0);
+INSERT INTO "Rooms" VALUES (13,0,0);
+INSERT INTO "Rooms" VALUES (14,0,0);
+INSERT INTO "Rooms" VALUES (15,1,0);
+INSERT INTO "Rooms" VALUES (16,1,0);
+INSERT INTO "Rooms" VALUES (17,1,0);
+INSERT INTO "Rooms" VALUES (18,1,0);
+INSERT INTO "Rooms" VALUES (19,2,0);
+INSERT INTO "Rooms" VALUES (20,2,0);
+INSERT INTO "Rooms" VALUES (21,2,0);
+INSERT INTO "Rooms" VALUES (22,3,0);
+INSERT INTO "Rooms" VALUES (23,3,0);
+INSERT INTO "Rooms" VALUES (24,3,0);
+COMMIT;

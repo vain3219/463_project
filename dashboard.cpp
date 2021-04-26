@@ -2,7 +2,6 @@
 #include "ui_dashboard.h"
 #include "loginauth.h"
 
-
 DashBoard::DashBoard(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::DashBoard)
@@ -24,16 +23,7 @@ DashBoard::DashBoard(QWidget *parent)
     setBlankPage();
     //
 
-    // Establish connection with SQLite Database
-    DbManager db("AntaresRDB.db");
-
-    // Attempt to populate the DataTable
-    //  If the DataTable can't be populated, display error text
-    if( !PopulateDataTable(db) )
-    {
-        ui->DataTable->hide();
-        ui->DatabaseLoadError->show();
-    }
+    databaseInit();
 }
 
 DashBoard::~DashBoard()
@@ -41,11 +31,40 @@ DashBoard::~DashBoard()
     delete ui;
 }
 
+bool DashBoard::databaseInit()
+{
+    // Establish connection with SQLite Database
+    //db = new DbManager("AntaresRDB.db");
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("AntaresRDB.db");
+    if (!db.open())
+    {
+       qDebug() << "Error: connection with database fail";
+       return false;
+    } else {
+       qDebug() << "Database: connection ok";
+    }
+
+    // Attempt to populate the DataTable
+    //  If the DataTable can't be populated, display error text
+    if( !db.isOpen() )
+    {
+        ui->DataTable->hide();
+        ui->DatabaseLoadError->show();
+    }
+
+    if( db.isValid()) {
+        qDebug() << "Database is valid.";
+    }
+    return true;
+}
+
 void DashBoard::on_LogoutButton_clicked()
 {
     // Create new login form object, show the new window, and close the dashboard window
     LoginAuth *LoginLoader = new LoginAuth;
     LoginLoader->show();
+    db.close();
     this->close();
 }
 
@@ -59,24 +78,28 @@ void DashBoard::on_DailyButton_clicked()
 {
     // Hide unecessary GUI elements
     setBlankPage();
+    updateTable("select * from Customer;");
 }
 
 void DashBoard::on_GuestsButton_clicked()
 {
     // Hide unecessary GUI elements
     setBlankPage();
+    updateTable("SELECT * FROM RoomTypes");
 }
 
 void DashBoard::on_HousekeepingButton_clicked()
 {
     // Hide unecessary GUI elements
     setBlankPage();
+    updateTable("SELECT * FROM CUSTOMER");
 }
 
 void DashBoard::on_InfoButton_clicked()
 {
     // Hide unecessary GUI elements
     setBlankPage();
+    updateTable("SELECT * FROM CUSTOMER");
 }
 
 void DashBoard::on_ReservationButton_clicked()
@@ -100,11 +123,13 @@ void DashBoard::on_WeeklyButton_clicked()
 {
     // Hide unecessary GUI elements
     setBlankPage();
+    updateTable("SELECT * FROM CUSTOMER");
 }
 
 void DashBoard::on_SubmitButon_clicked()
 {
     // Execute SQL search query here
+    updateTable("SELECT * FROM CUSTOMER");
 }
 
 void DashBoard::on_MakeResButton_clicked()
@@ -114,13 +139,6 @@ void DashBoard::on_MakeResButton_clicked()
    // Disable window resizing
    loadMe->setFixedSize(loadMe->size());
    loadMe->show();
-}
-
-bool DashBoard::PopulateDataTable(DbManager db)
-{
-    // Populates the data table with the given query
-    // Returns false if query fails
-    return db.isOpen();
 }
 
 void DashBoard::setBlankPage() {
@@ -246,6 +264,24 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
     ui->textEdit->setText(details);
 }
 
+void DashBoard::updateTable(QString rawString)
+{
+     QSqlQueryModel* model = new QSqlQueryModel;
+     QSqlQuery* qry = new QSqlQuery(db);
+     if( qry->prepare(rawString) )
+     {
+        qry->exec();
+        model->setQuery(*qry);
+        ui->DataTable->setModel(model);
+        qDebug() << model->rowCount() << " rows returned.";
+     } else {
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
+     }
+}
+
+// Room status buttons for Capabillity one
 void DashBoard::on_RoomButton_10_clicked()
 {
     setRoomDetails(10, ui->RoomButton_10);

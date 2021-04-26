@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 #include <QDebug>
 
 class DbManager
@@ -15,12 +16,15 @@ public:
        if (!m_db.open())
        {
           qDebug() << "Error: connection with database fail";
-       }
-       else
-       {
+       } else {
           qDebug() << "Database: connection ok";
        }
     };
+
+    QSqlQuery* rawQuery(QString rawString)
+    {
+        return new QSqlQuery(m_db.exec(rawString + ";"));
+    }
 
     void AddReservation();
     void RemoveReservation();
@@ -28,24 +32,28 @@ public:
     void AddHouseKeeping();
     void RemoveHouseKeeping();
 
-    bool isOpen() {
+    bool isOpen()
+    {
         return m_db.isOpen();
     };
 
-    bool closeDB() {
+    bool closeDB()
+    {
         m_db.close();
         return isOpen();
     }
 
-    bool openDB() {
+    bool openDB()
+    {
         if(!isOpen()) {
             m_db.open();
         }
         return isOpen();
     }
 
-private:
     QSqlDatabase m_db;
+private:
+
 };
 
 #endif // DBMANAGER_H
