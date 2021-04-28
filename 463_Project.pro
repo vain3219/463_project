@@ -10,6 +10,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    alert.cpp \
+    guestinfo.cpp \
     loginauth.cpp \
     main.cpp \
     dashboard.cpp \
@@ -17,12 +19,16 @@ SOURCES += \
 
 HEADERS += \
     DbManager.h \
+    alert.h \
     dashboard.h \
+    guestinfo.h \
     loginauth.h \
     reservations.h
 
 FORMS += \
+    alert.ui \
     dashboard.ui \
+    guestinfo.ui \
     loginauth.ui \
     reservations.ui
 

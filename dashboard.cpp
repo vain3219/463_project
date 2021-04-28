@@ -22,7 +22,6 @@ DashBoard::DashBoard(QWidget *parent)
     ui->stackedWidgetRDB->setCurrentIndex(1);
     setBlankPage();
     //
-
     databaseInit();
 }
 
@@ -70,12 +69,14 @@ void DashBoard::on_LogoutButton_clicked()
 
 void DashBoard::on_SearchButton_clicked()
 {
+    guestEdit = true;
     // Set the stacked widget to display the additional search GUI
     ui->stackedWidgetSR->setCurrentWidget(ui->SearchPage);
 }
 
 void DashBoard::on_DailyButton_clicked()
 {
+    guestEdit = true;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("select * from Customer;");
@@ -83,13 +84,15 @@ void DashBoard::on_DailyButton_clicked()
 
 void DashBoard::on_GuestsButton_clicked()
 {
+    guestEdit = true;
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("SELECT * FROM RoomTypes");
+    updateTable("SELECT * FROM Customer");
 }
 
 void DashBoard::on_HousekeepingButton_clicked()
 {
+    guestEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -97,6 +100,7 @@ void DashBoard::on_HousekeepingButton_clicked()
 
 void DashBoard::on_InfoButton_clicked()
 {
+    guestEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -104,6 +108,7 @@ void DashBoard::on_InfoButton_clicked()
 
 void DashBoard::on_ReservationButton_clicked()
 {
+    guestEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     // Set the stacked widget to display the additional reservation GUI
@@ -112,6 +117,7 @@ void DashBoard::on_ReservationButton_clicked()
 
 void DashBoard::on_RoomsButton_clicked()
 {
+    guestEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     // Set the stacked widget to display the room buttons
@@ -121,6 +127,7 @@ void DashBoard::on_RoomsButton_clicked()
 
 void DashBoard::on_WeeklyButton_clicked()
 {
+    guestEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -134,10 +141,12 @@ void DashBoard::on_SubmitButon_clicked()
 
 void DashBoard::on_MakeResButton_clicked()
 {
+   guestEdit = false;
    // Create new form object and display the window
    Reservations* loadMe = new Reservations;
    // Disable window resizing
    loadMe->setFixedSize(loadMe->size());
+   loadMe->setModal(1);
    loadMe->show();
 }
 
@@ -358,3 +367,20 @@ void DashBoard::on_RoomButton_24_clicked()
 }
 
 
+
+void DashBoard::on_DataTable_doubleClicked(const QModelIndex &index)
+{
+    if(guestEdit)
+    {
+        qDebug() << ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
+        GuestInfo* loadMeBaby = new GuestInfo(&db, ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt());
+        loadMeBaby->setModal(1);
+        // Disable window resizing
+        loadMeBaby->setFixedSize(loadMeBaby->size());
+        loadMeBaby->show();
+    }
+    else
+    {
+        qDebug() << "Guest editting is not permitted at the momment.";
+    }
+}

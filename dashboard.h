@@ -10,6 +10,7 @@
 #include <QSqlQueryModel>
 #include <QDebug>
 #include <QSqlError>
+#include "guestinfo.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DashBoard; }
@@ -92,10 +93,15 @@ private slots:
     void on_RoomButton_24_clicked();
     //
 
+    // Opens the GuestInfo window when a cell is double clicked in the TableView
+    //   with the guests information
+    void on_DataTable_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::DashBoard *ui;
     //DbManager* db;
     QSqlDatabase db;
+    bool guestEdit;
 
     // Databse initialization
     bool databaseInit();
