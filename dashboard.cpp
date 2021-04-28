@@ -41,6 +41,7 @@ bool DashBoard::databaseInit()
     //db = new DbManager("AntaresRDB.db");
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("AntaresRDB.db");
+    //db.setDatabaseName("C://Users//Grant//Desktop//orig//AntaresRDB.db");
     if (!db.open())
     {
        qDebug() << "Error: connection with database fail";
@@ -476,7 +477,7 @@ void DashBoard::deleteReservation()
 {
     qDebug() << "Delete selected.";
 
-    Alert* alert = new Alert("Are yo usure you want to delete this reservation?\nThis action can't be undone.");
+    Alert* alert = new Alert("Are you sure you want to delete this reservation?\nThis action can't be undone.");
     alert->setModal(1);
     // Disable window resizing
     alert->setFixedSize(alert->size());
@@ -486,6 +487,17 @@ void DashBoard::deleteReservation()
         /*
          * Submit query here to edit the information
          */
+
+        QSqlQuery* qry = new QSqlQuery(db);
+        if( qry->prepare("DELETE FROM Reservations WHERE ResID = " + QString::number(ResID)) )
+        {
+           qry->exec();
+        } else {
+           QSqlError error = qry->lastError();
+           qDebug() << "Failed to prepare query.";
+           qDebug() << "Database says: " + error.databaseText();
+        }
+
         qDebug() << "Reservation " + QString::number(ResID) + " has been deleted";
     } else {
         qDebug() << "No changes were made.";
