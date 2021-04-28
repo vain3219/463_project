@@ -40,8 +40,8 @@ bool DashBoard::databaseInit()
     // Establish connection with SQLite Database
     //db = new DbManager("AntaresRDB.db");
     db = QSqlDatabase::addDatabase("QSQLITE");
-    //db.setDatabaseName("AntaresRDB.db");
-    db.setDatabaseName("C://Users//Grant//Desktop//orig//AntaresRDB.db");
+    db.setDatabaseName("AntaresRDB.db");
+    //db.setDatabaseName("C://Users//Grant//Desktop//orig//AntaresRDB.db");
     if (!db.open())
     {
        qDebug() << "Error: connection with database fail";
@@ -517,6 +517,27 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
         connect(Vacuum, &QAction::toggled, this, &DashBoard::vacuumEdit);
         connect(Dusting, &QAction::toggled, this, &DashBoard::dustEdit);
         connect(Electronics, &QAction::toggled, this, &DashBoard::elecEdit);
+
+        //  GRANT
+        // SQL query here to check if the selected room(defined by variable roomID) is currently available
+
+        //if()
+        {
+            qDebug() << "Present 'Make room unavaible' option";
+            QAction* makeUn= new QAction("Make room unavaible", this);
+
+            menu->addSection("Availability");
+            menu->addAction(makeUn);
+            makeUn->setStatusTip("Make the selected room unavaible");
+            makeUn->setCheckable(true);
+
+            connect(Electronics, &QAction::toggled, this, &DashBoard::elecEdit);
+        }
+        //else
+        {
+            qDebug() << "The selected room is already unavailable";
+        }
+
     }
     else
     {
@@ -702,6 +723,30 @@ void DashBoard::elecEdit()
            qry->prepare("UPDATE Housekeeping SET Electronics = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " does not require electronic maintenance";
        }
+       qry->exec();
+       updateTable("SELECT * FROM Housekeeping");
+
+    }
+    else
+    {
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
+    }
+}
+
+void DashBoard::makeRoomUnavailable()
+{
+    QSqlQuery* qry = new QSqlQuery(db);
+
+    if(qry->prepare(""))
+    {
+       qry->exec();
+       qry->first();
+
+       //  GRANT
+       // SQL query to make the room unavaiable here
+
        qry->exec();
        updateTable("SELECT * FROM Housekeeping");
 

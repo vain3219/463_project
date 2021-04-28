@@ -159,5 +159,8 @@ private:
 
     //Use this function to update the selected rooms electronics status
     void elecEdit();
+
+    //
+    void makeRoomUnavailable();
 };
 #endif // DASHBOARD_H
