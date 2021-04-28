@@ -170,7 +170,9 @@ void DashBoard::on_SubmitButon_clicked()
         qry->first();
         qDebug() << "Customer found.";
         cusID = qry->value(0).toInt();
-        updateTable("SELECT * FROM Reservations WHERE CusID = " + QString::number(cusID));
+        // add "Reservations.roomNum" to the query
+        updateTable("SELECT Customer.FName, Customer.LName, Customer.Phone, Customer.Address, Reservations.CheckIn, Reservations.Checkout "
+            "FROM Reservations INNER JOIN Customer ON Reservations.CusID = Customer.CusID WHERE Reservations.CusID = " + QString::number(cusID));
     } else {
         QSqlError error = qry->lastError();
         qDebug() << "Failed to prepare query.";
