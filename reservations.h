@@ -2,7 +2,6 @@
 #define RESERVATIONS_H
 
 #include <QDialog>
-#include "DbManager.h"
 
 namespace Ui {
 class Reservations;

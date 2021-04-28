@@ -78,6 +78,7 @@ void DashBoard::on_SearchButton_clicked()
 {
     guestEdit = true;
     resEdit = false;
+    hkEdit = false;
     // Set the stacked widget to display the additional search GUI
     ui->stackedWidgetSR->setCurrentWidget(ui->SearchPage);
 }
@@ -86,6 +87,7 @@ void DashBoard::on_DailyButton_clicked()
 {
     guestEdit = true;
     resEdit = false;
+    hkEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("select * from Customer;");
@@ -95,6 +97,7 @@ void DashBoard::on_GuestsButton_clicked()
 {
     guestEdit = true;
     resEdit = false;
+    hkEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -104,15 +107,17 @@ void DashBoard::on_HousekeepingButton_clicked()
 {
     guestEdit = false;
     resEdit = false;
+    hkEdit = true;
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("SELECT * FROM Customer");
+    updateTable("SELECT * FROM Housekeeping");
 }
 
 void DashBoard::on_InfoButton_clicked()
 {
     guestEdit = false;
     resEdit = false;
+    hkEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -122,6 +127,7 @@ void DashBoard::on_ReservationButton_clicked()
 {
     guestEdit = false;
     resEdit = true;
+    hkEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     // Set the stacked widget to display the additional reservation GUI
@@ -133,6 +139,7 @@ void DashBoard::on_RoomsButton_clicked()
 {
     guestEdit = false;
     resEdit = false;
+    hkEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     // Set the stacked widget to display the room buttons
@@ -144,6 +151,7 @@ void DashBoard::on_WeeklyButton_clicked()
 {
     guestEdit = false;
     resEdit = false;
+    hkEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -207,6 +215,7 @@ void DashBoard::on_MakeResButton_clicked()
 {
    guestEdit = false;
    resEdit = false;
+   hkEdit = false;
    // Create new form object and display the window
    Reservations* loadMe = new Reservations;
    // Disable window resizing
@@ -454,9 +463,10 @@ void DashBoard::on_DataTable_doubleClicked(const QModelIndex &index)
 
 void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
 {
+         qDebug() << "Right clicked.  Displaying context menu.";
     if( resEdit )
     {
-        qDebug() << "Right clicked.  Displaying context menu.";
+        qDebug() << "Reservation editting menu.";
         QModelIndex index= ui->DataTable->indexAt(pos);
 
         QMenu *menu=new QMenu(this);
@@ -467,9 +477,49 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
         ResID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
         connect(del, &QAction::triggered, this, &DashBoard::deleteReservation);
     }
+    else if( hkEdit )
+    {
+        qDebug() << "Housekeeping editting menu.";
+        QModelIndex index= ui->DataTable->indexAt(pos);
+
+        QMenu *menu=new QMenu(this);
+        QAction* Bathroom= new QAction("Bathroom", this);
+        QAction* Towels= new QAction("Towels", this);
+        QAction* Vacuum= new QAction("Vacuum", this);
+        QAction* Dusting= new QAction("Dusting", this);
+        QAction* Electronics= new QAction("Electronics", this);
+
+        menu->addAction(Bathroom);
+        Bathroom->setStatusTip("Bathroom cleaning requested");
+        Bathroom->setCheckable(true);
+
+        menu->addAction(Towels);
+        Towels->setStatusTip("Towels requested");
+        Towels->setCheckable(true);
+
+        menu->addAction(Vacuum);
+        Vacuum->setStatusTip("Vacuuming requested");
+        Vacuum->setCheckable(true);
+
+        menu->addAction(Dusting);
+        Dusting->setStatusTip("Dusting requested");
+        Dusting->setCheckable(true);
+
+        menu->addAction(Electronics);
+        Electronics->setStatusTip("Electronics help requested");
+        Electronics->setCheckable(true);
+
+        menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
+        roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),1)).toInt();
+        connect(Bathroom, &QAction::toggled, this, &DashBoard::bathEdit);
+        connect(Towels, &QAction::toggled, this, &DashBoard::towelEdit);
+        connect(Vacuum, &QAction::toggled, this, &DashBoard::vacuumEdit);
+        connect(Dusting, &QAction::toggled, this, &DashBoard::dustEdit);
+        connect(Electronics, &QAction::toggled, this, &DashBoard::elecEdit);
+    }
     else
     {
-
+        qDebug() << "Context menu unavailable.";
     }
 }
 
@@ -484,10 +534,6 @@ void DashBoard::deleteReservation()
     alert->exec();
 
     if(alert->isAccepted()) {
-        /*
-         * Submit query here to edit the information
-         */
-
         QSqlQuery* qry = new QSqlQuery(db);
         if( qry->prepare("DELETE FROM Reservations WHERE ResID = " + QString::number(ResID)) )
         {
@@ -507,4 +553,69 @@ void DashBoard::deleteReservation()
     delete alert;
 
     updateTable("Select * FROM Reservations");
+}
+
+void DashBoard::bathEdit()
+{
+    //edit here
+    if(set)
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+void DashBoard::towelEdit()
+{
+    //edit here
+    if(set)
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+void DashBoard::vacuumEdit()
+{
+    //edit here
+    if(set)
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+void DashBoard::dustEdit()
+{
+    //edit here
+    if(set)
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+void DashBoard::elecEdit()
+{
+    //edit here
+    if(set)
+    {
+
+    }
+    else
+    {
+
+    }
 }

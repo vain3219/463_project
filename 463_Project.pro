@@ -18,7 +18,6 @@ SOURCES += \
     reservations.cpp
 
 HEADERS += \
-    DbManager.h \
     alert.h \
     dashboard.h \
     guestinfo.h \

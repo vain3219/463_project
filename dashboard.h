@@ -2,7 +2,6 @@
 #define DASHBOARD_H
 
 #include <QMainWindow>
-#include "DbManager.h"
 #include "reservations.h"
 #include <cmath>
 #include <QTableWidget>
@@ -105,12 +104,13 @@ private slots:
 
 private:
     Ui::DashBoard *ui;
-    //DbManager* db;
     QSqlDatabase db;
     bool guestEdit;
     bool resEdit;
+    bool hkEdit;
     int roomNum;
     int ResID;
+    int roomID;
     QPushButton* roomPtr;
 
     // Databse initialization
@@ -142,6 +142,22 @@ private:
     // Use this function to update the tableView widget with the data from your SQL query
     void updateTable(QString);
 
+    // Use this function to delete the selected reservation from the databse using ResID as a key value
     void deleteReservation();
+
+    //
+    void bathEdit(bool set);
+
+    //
+    void towelEdit(bool set);
+
+    //
+    void vacuumEdit(bool set);
+
+    //
+    void dustEdit(bool set);
+
+    //
+    void elecEdit(bool set);
 };
 #endif // DASHBOARD_H
