@@ -145,19 +145,19 @@ private:
     // Use this function to delete the selected reservation from the databse using ResID as a key value
     void deleteReservation();
 
-    //
-    void bathEdit(bool set);
+    //Use this function to update the selected rooms bathroom status
+    void bathEdit();
 
-    //
-    void towelEdit(bool set);
+    //Use this function to update the selected rooms towel status
+    void towelEdit();
 
-    //
-    void vacuumEdit(bool set);
+    //Use this function to update the selected rooms vacuuming status
+    void vacuumEdit();
 
-    //
-    void dustEdit(bool set);
+    //Use this function to update the selected rooms dusting status
+    void dustEdit();
 
-    //
-    void elecEdit(bool set);
+    //Use this function to update the selected rooms electronics status
+    void elecEdit();
 };
 #endif // DASHBOARD_H

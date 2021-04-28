@@ -40,8 +40,8 @@ bool DashBoard::databaseInit()
     // Establish connection with SQLite Database
     //db = new DbManager("AntaresRDB.db");
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("AntaresRDB.db");
-    //db.setDatabaseName("C://Users//Grant//Desktop//orig//AntaresRDB.db");
+    //db.setDatabaseName("AntaresRDB.db");
+    db.setDatabaseName("C://Users//Grant//Desktop//orig//AntaresRDB.db");
     if (!db.open())
     {
        qDebug() << "Error: connection with database fail";
@@ -510,7 +510,8 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
         Electronics->setCheckable(true);
 
         menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
-        roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),1)).toInt();
+        roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
+
         connect(Bathroom, &QAction::toggled, this, &DashBoard::bathEdit);
         connect(Towels, &QAction::toggled, this, &DashBoard::towelEdit);
         connect(Vacuum, &QAction::toggled, this, &DashBoard::vacuumEdit);
@@ -557,65 +558,158 @@ void DashBoard::deleteReservation()
 
 void DashBoard::bathEdit()
 {
+
     //edit here
-    if(set)
+    QSqlQuery* qry = new QSqlQuery(db);
+    int set = 0;
+    if(qry->prepare("SELECT Bathroom FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
     {
+       qry->exec();
+       qry->first();
+       set = qry->value(0).toInt();
+
+
+       if(set == 0) {
+           qry->prepare("UPDATE Housekeeping SET Bathroom = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " requires bathroom cleaning";
+       }
+       else {
+           qry->prepare("UPDATE Housekeeping SET Bathroom = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " does not require bathroom cleaning";
+       }
+       qry->exec();
+       updateTable("SELECT * FROM Housekeeping");
 
     }
     else
     {
-
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
 }
 
 void DashBoard::towelEdit()
 {
     //edit here
-    if(set)
+    QSqlQuery* qry = new QSqlQuery(db);
+    int set = 0;
+    if(qry->prepare("SELECT Towels FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
     {
+       qry->exec();
+       qry->first();
+       set = qry->value(0).toInt();
+
+
+       if(set == 0) {
+           qry->prepare("UPDATE Housekeeping SET Towels = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " requires towels";
+       }
+       else {
+           qry->prepare("UPDATE Housekeeping SET Towels = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " does not require towels";
+       }
+       qry->exec();
+       updateTable("SELECT * FROM Housekeeping");
 
     }
     else
     {
-
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
 }
 
 void DashBoard::vacuumEdit()
 {
-    //edit here
-    if(set)
+    QSqlQuery* qry = new QSqlQuery(db);
+    int set = 0;
+    if(qry->prepare("SELECT Vacuum FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
     {
+       qry->exec();
+       qry->first();
+       set = qry->value(0).toInt();
+
+
+       if(set == 0) {
+           qry->prepare("UPDATE Housekeeping SET Vacuum = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " requires vacuuming";
+       }
+       else {
+           qry->prepare("UPDATE Housekeeping SET Vacuum = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " does not require vacuuming";
+       }
+       qry->exec();
+       updateTable("SELECT * FROM Housekeeping");
 
     }
     else
     {
-
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
 }
 
 void DashBoard::dustEdit()
 {
-    //edit here
-    if(set)
+    QSqlQuery* qry = new QSqlQuery(db);
+    int set = 0;
+    if(qry->prepare("SELECT Dusting FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
     {
+       qry->exec();
+       qry->first();
+       set = qry->value(0).toInt();
+
+
+       if(set == 0) {
+           qry->prepare("UPDATE Housekeeping SET Dusting = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " requires dusting";
+       }
+       else {
+           qry->prepare("UPDATE Housekeeping SET Dusting = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " does not require dusting";
+       }
+       qry->exec();
+       updateTable("SELECT * FROM Housekeeping");
 
     }
     else
     {
-
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
 }
 
 void DashBoard::elecEdit()
 {
-    //edit here
-    if(set)
+    QSqlQuery* qry = new QSqlQuery(db);
+    int set = 0;
+    if(qry->prepare("SELECT Electronics FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
     {
+       qry->exec();
+       qry->first();
+       set = qry->value(0).toInt();
+
+
+       if(set == 0) {
+           qry->prepare("UPDATE Housekeeping SET Electronics = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " requires electronic maintenance";
+       }
+       else {
+           qry->prepare("UPDATE Housekeeping SET Electronics = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qDebug() << "Room " + QString::number(roomID) + " does not require electronic maintenance";
+       }
+       qry->exec();
+       updateTable("SELECT * FROM Housekeeping");
 
     }
     else
     {
-
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
 }
