@@ -119,11 +119,13 @@ void DashBoard::on_RoomsButton_clicked()
     ui->stackedWidgetRDB->setCurrentIndex(0);
 }
 
-void DashBoard::on_WeeklyButton_clicked()
+void DashBoard::on_WeeklyButton_clicked()  // capability 2 FILL THIS IN
 {
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("SELECT * FROM Customer");
+    QDate cd = QDate::currentDate();
+    QString date = cd.toString(Qt::ISODate);
+    updateTable("SELECT Rooms.RoomID, Customer.FName, Customer.LName FROM Rooms LEFT JOIN Reservations ON Rooms.RoomID = Reservations.RoomID LEFT JOIN Customer ON Reservations.CusID = Customer.CusID");
 }
 
 void DashBoard::on_SubmitButon_clicked()
@@ -144,6 +146,8 @@ void DashBoard::on_MakeResButton_clicked()
 void DashBoard::setBlankPage() {
     // Sets the stacked widget to display the blankPage when additional GUI
     //  elements are unecessary
+    ui->changeAvailable->hide();
+    ui->doNothing->hide();
     if(ui->stackedWidgetSR->currentIndex() != 0)
     {
         ui->stackedWidgetSR->setCurrentWidget(ui->BlankPage);
@@ -154,22 +158,36 @@ void DashBoard::setBlankPage() {
     }
 }
 
-void DashBoard::setRoomButton(int roomNumber, QPushButton* button)
+void DashBoard::setRoomButton(int roomNumber, QPushButton* button)          // CAPABILITY 1
 // void DashBoard::setRoomButton(int roomNumber, QPushButton* button, roomStatus status)
 /*
  * We can use a database query to retrieve the value for the room status and append it to the strin as
  * I have commented out below.  This would allow dynamic button text and color.
  */
 {
-    QString* buttonText = new QString("Room " + QString::number(roomNumber) + " - #STATUS HERE#");// + getStringStatus(Query));
+    // query string status here
+    int status = 0;
+    QSqlQuery* qry = new QSqlQuery(db);
+    if( qry->prepare("SELECT Status FROM Rooms WHERE RoomID IS " + QString::number(roomNumber) + ";"))
+    {
+       qry->exec();
+       qry->first();
+       status = qry->value(0).toInt();
+       qDebug() << " successfully returned.";
+    } else {
+       QSqlError error = qry->lastError();
+       qDebug() << "Failed to prepare query.";
+       qDebug() << "Database says: " + error.databaseText();
+    }
+    QString* buttonText = new QString("Room " + QString::number(roomNumber) + " Status: " + getStatusString(status));// + getStringStatus(Query));
     button->setText(*buttonText);
     // Random coloring for testing
-    int statusTemp = rand() % 4 + 0;
+    //int statusTemp = rand() % 4 + 0;        // query for status
     //
-    setColor(roomStatus(statusTemp), button);
+    setColor(roomStatus(status), button);
 }
 
-QString DashBoard::getStatusString(roomStatus status)
+QString DashBoard::getStatusString(int status)
 {
     switch(status)
     {
@@ -226,7 +244,7 @@ void DashBoard::setColor(roomStatus status, QPushButton* button) {
 
 void DashBoard::setRoomStatusButtons()
 {
-        srand (time(NULL));
+        srand (time(NULL));     // get rid of
         setRoomButton(10, ui->RoomButton_10);
         setRoomButton(11, ui->RoomButton_11);
         setRoomButton(12, ui->RoomButton_12);
@@ -246,21 +264,51 @@ void DashBoard::setRoomStatusButtons()
 
 void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
 {
-    QString details =
-    "<body><style>#boxes {content: "";display: table;clear: both;}"
-    "div {float: left;height: 470px;width: 23%;padding: 0 10px;}</style>"
-    "<main id=\"boxes\">"
-    ""
-    "<div><h1>Room " + QString::number(roomNumber)+ " - #ROOM STATUS HERE# </h1>\n"
-    "<p>This is information relevent to the rooms status.</p>"
-    "<p>All of this text will be presented on the screen.</p></div>"
-    "<p>That's right; look no further! More text!</p>"
-    "<p>We can have more text here also! Yay html!</p>"
-    "</div></main></body>";
+    ui->changeAvailable->hide();
+    ui->doNothing->hide();
+    int status = 0;
+    QString details = "<body><style>#boxes {content: "";display: table;clear: both;}"
+        "div {float: left;height: 470px;width: 23%;padding: 0 10px;}</style>"
+        "<main id=\"boxes\">"
+        ""
+        "<div><h1>Room ";
+    QSqlQuery* qry = new QSqlQuery(db);
+    if( qry->prepare("SELECT Status FROM Rooms WHERE RoomID IS " + QString::number(roomNumber) + ";"))
+    {
+       qry->exec();
+       qry->first();
+       status = qry->value(0).toInt();
+       qDebug() << " successfully returned.";
+    } else {
+       QSqlError error = qry->lastError();
+       qDebug() << "Failed to prepare query.";
+       qDebug() << "Database says: " + error.databaseText();
+    }
 
-    /*
-     * Some SQL Query logic here and create a more detialed report
-     */
+    if(status == AVAILABLE) {
+        // CAPABILITY 6 BUTTON PRESSED
+
+    }
+    else if(status == OCCUPIED) {
+        // CAPABILITY 6 BUTTON PRESSED
+    }
+    else if(status == DIRTY) {
+        details += QString::number(roomNumber)+ " - DIRTY </h1>\n"     // CAPABILITY 1
+        "<p>This room is currently dirty.</p>"
+        "<p>Do you want to make the room available?</p>"
+        "</div></main></body>";
+        ui->changeAvailable->show();
+        ui->doNothing->show();
+    }
+    else if(status == MAINTENANCE) {
+        details += QString::number(roomNumber)+ " - DIRTY </h1>\n"     // CAPABILITY 1
+        "<p>This room is currently under maintenance.</p>"
+        "<p>Do you want to make the room available?</p>"
+        "</div></main></body>";
+        ui->changeAvailable->show();
+        ui->doNothing->show();
+    }
+
     ui->textEdit->setText(details);
 }
 
@@ -284,77 +332,124 @@ void DashBoard::updateTable(QString rawString)
 // Room status buttons for Capabillity one
 void DashBoard::on_RoomButton_10_clicked()
 {
+    roomNum = 10;
+    roomPtr = ui->RoomButton_10;
     setRoomDetails(10, ui->RoomButton_10);
 }
 
 void DashBoard::on_RoomButton_11_clicked()
 {
+    roomNum = 11;
+    roomPtr = ui->RoomButton_11;
     setRoomDetails(11, ui->RoomButton_11);
 }
 
 void DashBoard::on_RoomButton_12_clicked()
 {
+    roomNum = 12;
+    roomPtr = ui->RoomButton_12;
     setRoomDetails(12, ui->RoomButton_12);
 }
 
 void DashBoard::on_RoomButton_13_clicked()
 {
+    roomNum = 13;
+    roomPtr = ui->RoomButton_13;
     setRoomDetails(13, ui->RoomButton_13);
 }
 
 void DashBoard::on_RoomButton_14_clicked()
 {
+    roomNum = 14;
+    roomPtr = ui->RoomButton_14;
     setRoomDetails(14, ui->RoomButton_14);
 }
 
 void DashBoard::on_RoomButton_15_clicked()
 {
+    roomNum = 15;
+    roomPtr = ui->RoomButton_15;
     setRoomDetails(15, ui->RoomButton_15);
 }
 
 void DashBoard::on_RoomButton_16_clicked()
 {
+    roomNum = 16;
+    roomPtr = ui->RoomButton_16;
     setRoomDetails(16, ui->RoomButton_16);
 }
 
 void DashBoard::on_RoomButton_17_clicked()
 {
+    roomNum = 17;
+    roomPtr = ui->RoomButton_17;
     setRoomDetails(17, ui->RoomButton_17);
 }
 
 void DashBoard::on_RoomButton_18_clicked()
 {
+    roomNum = 18;
+    roomPtr = ui->RoomButton_18;
     setRoomDetails(18, ui->RoomButton_18);
 }
 
 void DashBoard::on_RoomButton_19_clicked()
 {
+    roomNum = 19;
+    roomPtr = ui->RoomButton_19;
     setRoomDetails(19, ui->RoomButton_19);
 }
 
 void DashBoard::on_RoomButton_20_clicked()
 {
+    roomNum = 20;
+    roomPtr = ui->RoomButton_20;
     setRoomDetails(20, ui->RoomButton_20);
 }
 
 void DashBoard::on_RoomButton_21_clicked()
 {
+    roomNum = 21;
+    roomPtr = ui->RoomButton_21;
     setRoomDetails(21, ui->RoomButton_21);
 }
 
 void DashBoard::on_RoomButton_22_clicked()
 {
+    roomNum = 22;
+    roomPtr = ui->RoomButton_22;
     setRoomDetails(22, ui->RoomButton_22);
 }
 
 void DashBoard::on_RoomButton_23_clicked()
 {
+    roomNum = 23;
+    roomPtr = ui->RoomButton_23;
     setRoomDetails(23, ui->RoomButton_23);
 }
 
 void DashBoard::on_RoomButton_24_clicked()
 {
+    roomNum = 24;
+    roomPtr = ui->RoomButton_24;
     setRoomDetails(24, ui->RoomButton_24);
 }
 
+void DashBoard::on_changeAvailable_clicked()
+{
+    // update query
+    QSqlQuery* qry = new QSqlQuery(db);
+    if( qry->prepare("UPDATE Rooms SET Status = 0 WHERE RoomID = " + QString::number(roomNum) + ";"))
+    {
+       qry->exec();
+       qDebug() << " successfully returned.";
+    } else {
+       QSqlError error = qry->lastError();
+       qDebug() << "Failed to prepare query.";
+       qDebug() << "Database says: " + error.databaseText();
+    }
 
+    setRoomButton(roomNum, roomPtr);
+    setRoomDetails(roomNum, roomPtr);
+
+}

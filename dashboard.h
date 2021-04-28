@@ -10,6 +10,8 @@
 #include <QSqlQueryModel>
 #include <QDebug>
 #include <QSqlError>
+#include <QDate>
+#include <QTextStream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DashBoard; }
@@ -92,11 +94,14 @@ private slots:
     void on_RoomButton_24_clicked();
     //
 
+    void on_changeAvailable_clicked();
+
 private:
     Ui::DashBoard *ui;
     //DbManager* db;
     QSqlDatabase db;
-
+    int roomNum;
+    QPushButton* roomPtr;
     // Databse initialization
     bool databaseInit();
 
@@ -111,7 +116,7 @@ private:
 
     // Returns the respective string for the given enum roomStatus value defined
     //  before the DashBoard class
-    QString getStatusString(roomStatus status);
+    QString getStatusString(int status);
 
     // Sets the color of room status buttons
     void setColor(roomStatus status, QPushButton* button);

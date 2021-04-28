@@ -389,6 +389,32 @@
        <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
       </property>
      </widget>
+     <widget class="QPushButton" name="changeAvailable">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>640</y>
+        <width>80</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Yes</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="doNothing">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>640</y>
+        <width>80</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>No</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="DBViewPage">
      <widget class="QTableView" name="DataTable">
@@ -414,7 +440,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="BlankPage"/>
       <widget class="QWidget" name="ReservationPage">
