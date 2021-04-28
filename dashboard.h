@@ -101,12 +101,16 @@ private slots:
 
     void on_SearchField_editingFinished();
 
+    void on_DataTable_customContextMenuRequested(const QPoint &pos);
+
 private:
     Ui::DashBoard *ui;
     //DbManager* db;
     QSqlDatabase db;
     bool guestEdit;
+    bool resEdit;
     int roomNum;
+    int ResID;
     QPushButton* roomPtr;
 
     // Databse initialization
@@ -137,5 +141,7 @@ private:
 
     // Use this function to update the tableView widget with the data from your SQL query
     void updateTable(QString);
+
+    void deleteReservation();
 };
 #endif // DASHBOARD_H

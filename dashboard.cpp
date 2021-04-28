@@ -25,6 +25,9 @@ DashBoard::DashBoard(QWidget *parent)
     databaseInit();
 
     updateTable("select * from Customer;");
+
+    ui->DataTable->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->DataTable, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customMenuRequested(QPoint)));
 }
 
 DashBoard::~DashBoard()
@@ -73,6 +76,7 @@ void DashBoard::on_SearchButton_clicked()
 // Capability 7
 {
     guestEdit = true;
+    resEdit = false;
     // Set the stacked widget to display the additional search GUI
     ui->stackedWidgetSR->setCurrentWidget(ui->SearchPage);
 }
@@ -80,6 +84,7 @@ void DashBoard::on_SearchButton_clicked()
 void DashBoard::on_DailyButton_clicked()
 {
     guestEdit = true;
+    resEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("select * from Customer;");
@@ -88,6 +93,7 @@ void DashBoard::on_DailyButton_clicked()
 void DashBoard::on_GuestsButton_clicked()
 {
     guestEdit = true;
+    resEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -96,6 +102,7 @@ void DashBoard::on_GuestsButton_clicked()
 void DashBoard::on_HousekeepingButton_clicked()
 {
     guestEdit = false;
+    resEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -104,6 +111,7 @@ void DashBoard::on_HousekeepingButton_clicked()
 void DashBoard::on_InfoButton_clicked()
 {
     guestEdit = false;
+    resEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -112,15 +120,18 @@ void DashBoard::on_InfoButton_clicked()
 void DashBoard::on_ReservationButton_clicked()
 {
     guestEdit = false;
+    resEdit = true;
     // Hide unecessary GUI elements
     setBlankPage();
     // Set the stacked widget to display the additional reservation GUI
     ui->stackedWidgetSR->setCurrentWidget(ui->ReservationPage);
+        updateTable("SELECT * FROM Reservations");
 }
 
 void DashBoard::on_RoomsButton_clicked()
 {
     guestEdit = false;
+    resEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     // Set the stacked widget to display the room buttons
@@ -131,6 +142,7 @@ void DashBoard::on_RoomsButton_clicked()
 void DashBoard::on_WeeklyButton_clicked()
 {
     guestEdit = false;
+    resEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
     updateTable("SELECT * FROM Customer");
@@ -193,6 +205,7 @@ void DashBoard::on_SearchField_editingFinished()
 void DashBoard::on_MakeResButton_clicked()
 {
    guestEdit = false;
+   resEdit = false;
    // Create new form object and display the window
    Reservations* loadMe = new Reservations;
    // Disable window resizing
@@ -421,8 +434,6 @@ void DashBoard::on_RoomButton_24_clicked()
     setRoomDetails(24, ui->RoomButton_24);
 }
 
-
-
 void DashBoard::on_DataTable_doubleClicked(const QModelIndex &index)
 {
     if(guestEdit)
@@ -440,6 +451,48 @@ void DashBoard::on_DataTable_doubleClicked(const QModelIndex &index)
     }
 }
 
+void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
+{
+    if( resEdit )
+    {
+        qDebug() << "Right clicked.  Displaying context menu.";
+        QModelIndex index= ui->DataTable->indexAt(pos);
 
+        QMenu *menu=new QMenu(this);
+        QAction* del= new QAction("Delete Reservation", this);
+        menu->addAction(del);
+        del->setStatusTip("Deleted the currently selected row.");
+        menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
+        ResID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
+        connect(del, &QAction::triggered, this, &DashBoard::deleteReservation);
+    }
+    else
+    {
 
+    }
+}
 
+void DashBoard::deleteReservation()
+{
+    qDebug() << "Delete selected.";
+
+    Alert* alert = new Alert("Are yo usure you want to delete this reservation?\nThis action can't be undone.");
+    alert->setModal(1);
+    // Disable window resizing
+    alert->setFixedSize(alert->size());
+    alert->exec();
+
+    if(alert->isAccepted()) {
+        /*
+         * Submit query here to edit the information
+         */
+        qDebug() << "Reservation " + QString::number(ResID) + " has been deleted";
+    } else {
+        qDebug() << "No changes were made.";
+    }
+
+    alert->close();
+    delete alert;
+
+    updateTable("Select * FROM Reservations");
+}

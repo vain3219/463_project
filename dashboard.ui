@@ -414,7 +414,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="BlankPage"/>
       <widget class="QWidget" name="ReservationPage">
@@ -457,6 +457,21 @@
         </property>
         <property name="text">
          <string>Submit</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page">
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>50</y>
+          <width>80</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>PushButton</string>
         </property>
        </widget>
       </widget>
