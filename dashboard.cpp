@@ -23,6 +23,8 @@ DashBoard::DashBoard(QWidget *parent)
     setBlankPage();
     //
     databaseInit();
+
+    updateTable("select * from Customer;");
 }
 
 DashBoard::~DashBoard()
@@ -68,6 +70,7 @@ void DashBoard::on_LogoutButton_clicked()
 }
 
 void DashBoard::on_SearchButton_clicked()
+// Capability 7
 {
     guestEdit = true;
     // Set the stacked widget to display the additional search GUI
@@ -135,8 +138,54 @@ void DashBoard::on_WeeklyButton_clicked()
 
 void DashBoard::on_SubmitButon_clicked()
 {
-    // Execute SQL search query here
-    updateTable("SELECT * FROM Customer");
+    QString inputStr = ui->SearchField->text(), statement;
+    QVector<QStringRef> args = inputStr.splitRef(" ");
+    QSqlQuery* qry = new QSqlQuery(db);
+    int cusID = 0;
+
+    qDebug() << QString::number(args.count()) + " arguements given.";
+
+    switch(args.count())
+    {
+    case 0:
+        ui->SearchField->placeholderText() = "Please enter a first and/or last name";
+        break;
+
+    case 1:
+        statement = "SELECT CusID FROM Customer WHERE (FName = '" + args.at(0) + "' OR LName = '" + args.at(0) + "' )";
+        qDebug() << args.at(0);
+        break;
+
+
+    case 2:
+        statement = "SELECT CusID FROM Customer WHERE (FName = '" + args.at(0) + "' OR LName = '" + args.at(1) + "' )";
+        qDebug() << args.at(0);
+        qDebug() << args.at(1);
+        break;
+    }
+
+    if( qry->prepare(statement) && args.count() > 0 )
+    {
+        qry->exec();
+        qry->first();
+        qDebug() << "Customer found.";
+        cusID = qry->value(0).toInt();
+        updateTable("SELECT * FROM Reservations WHERE CusID = " + QString::number(cusID));
+    } else {
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
+    }
+}
+
+void DashBoard::on_SearchField_returnPressed()
+{
+    on_SubmitButon_clicked();
+}
+
+void DashBoard::on_SearchField_editingFinished()
+{
+    on_SubmitButon_clicked();
 }
 
 void DashBoard::on_MakeResButton_clicked()
@@ -293,12 +342,16 @@ void DashBoard::updateTable(QString rawString)
 // Room status buttons for Capabillity one
 void DashBoard::on_RoomButton_10_clicked()
 {
-    setRoomDetails(10, ui->RoomButton_10);
+    roomNum = 10;
+    roomPtr = ui->RoomButton_10;
+    //setRoomDetails(10, ui->RoomButton_10);
 }
 
 void DashBoard::on_RoomButton_11_clicked()
 {
-    setRoomDetails(11, ui->RoomButton_11);
+    roomNum = 11;
+    roomPtr = ui->RoomButton_11;
+    //setRoomDetails(11, ui->RoomButton_11);
 }
 
 void DashBoard::on_RoomButton_12_clicked()
@@ -384,3 +437,7 @@ void DashBoard::on_DataTable_doubleClicked(const QModelIndex &index)
         qDebug() << "Guest editting is not permitted at the momment.";
     }
 }
+
+
+
+

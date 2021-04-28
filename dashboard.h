@@ -97,11 +97,17 @@ private slots:
     //   with the guests information
     void on_DataTable_doubleClicked(const QModelIndex &index);
 
+    void on_SearchField_returnPressed();
+
+    void on_SearchField_editingFinished();
+
 private:
     Ui::DashBoard *ui;
     //DbManager* db;
     QSqlDatabase db;
     bool guestEdit;
+    int roomNum;
+    QPushButton* roomPtr;
 
     // Databse initialization
     bool databaseInit();
