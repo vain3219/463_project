@@ -2,7 +2,6 @@
 #define DASHBOARD_H
 
 #include <QMainWindow>
-#include "DbManager.h"
 #include "reservations.h"
 #include <cmath>
 #include <QTableWidget>
@@ -12,6 +11,9 @@
 #include <QSqlError>
 #include <QDate>
 #include <QTextStream>
+#include <QSqlQuery>
+#include "guestinfo.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class DashBoard; }
@@ -94,6 +96,7 @@ private slots:
     void on_RoomButton_24_clicked();
     //
 
+
     void on_changeAvailable_clicked();
 
     void on_Day1_clicked();
@@ -110,12 +113,27 @@ private slots:
 
     void on_Day7_clicked();
 
+    // Opens the GuestInfo window when a cell is double clicked in the TableView
+    //   with the guests information
+    void on_DataTable_doubleClicked(const QModelIndex &index);
+
+    void on_SearchField_returnPressed();
+
+    void on_SearchField_editingFinished();
+
+    void on_DataTable_customContextMenuRequested(const QPoint &pos);
+
 private:
     Ui::DashBoard *ui;
-    //DbManager* db;
     QSqlDatabase db;
+    bool guestEdit;
+    bool resEdit;
+    bool hkEdit;
     int roomNum;
+    int ResID;
+    int roomID;
     QPushButton* roomPtr;
+
     // Databse initialization
     bool databaseInit();
 
@@ -146,5 +164,26 @@ private:
 
     // Use this function to update the tableView widget with the data from your SQL query
     void updateTable(QString);
+
+    // Use this function to delete the selected reservation from the databse using ResID as a key value
+    void deleteReservation();
+
+    //Use this function to update the selected rooms bathroom status
+    void bathEdit();
+
+    //Use this function to update the selected rooms towel status
+    void towelEdit();
+
+    //Use this function to update the selected rooms vacuuming status
+    void vacuumEdit();
+
+    //Use this function to update the selected rooms dusting status
+    void dustEdit();
+
+    //Use this function to update the selected rooms electronics status
+    void elecEdit();
+
+    //
+    void makeRoomUnavailable();
 };
 #endif // DASHBOARD_H
