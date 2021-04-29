@@ -96,6 +96,20 @@ private slots:
 
     void on_changeAvailable_clicked();
 
+    void on_Day1_clicked();
+
+    void on_Day2_clicked();
+
+    void on_Day3_clicked();
+
+    void on_Day4_clicked();
+
+    void on_Day5_clicked();
+
+    void on_Day6_clicked();
+
+    void on_Day7_clicked();
+
 private:
     Ui::DashBoard *ui;
     //DbManager* db;
@@ -113,6 +127,8 @@ private:
     // Used to set the text and color of the QPushButtons for the Room Status display
     void setRoomButton(int roomNumber, QPushButton* button);
     void setRoomButton(int roomNumber, QPushButton* button, roomStatus status);
+    void setRoomButtonDaily(int roomNumber, QString cd, QPushButton* button);
+    void dailyButtonUpdate(QString cd);
 
     // Returns the respective string for the given enum roomStatus value defined
     //  before the DashBoard class

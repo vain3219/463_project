@@ -123,9 +123,34 @@ void DashBoard::on_WeeklyButton_clicked()  // capability 2 FILL THIS IN
 {
     // Hide unecessary GUI elements
     setBlankPage();
+    ui->stackedWidgetSR->setCurrentIndex(3);
     QDate cd = QDate::currentDate();
-    QString date = cd.toString(Qt::ISODate);
-    updateTable("SELECT Rooms.RoomID, Customer.FName, Customer.LName FROM Rooms LEFT JOIN Reservations ON Rooms.RoomID = Reservations.RoomID LEFT JOIN Customer ON Reservations.CusID = Customer.CusID");
+    QString current = cd.toString(Qt::ISODate);
+
+    QHeaderView *vertHeader = new QHeaderView(Qt::Vertical, ui->DataTable);
+
+    updateTable("SELECT "
+    "CASE WHEN Reservations.CheckIn = '" + current + "' THEN 'Room: ' || Rooms.RoomID || ' ' || Customer.LName || ', ' || Customer.FName ELSE 'Room: ' || Rooms.RoomID END '" + current +"', "
+    "CASE WHEN Reservations.CheckIn = '" + cd.addDays(1).toString(Qt::ISODate) + "' THEN 'Room: ' || Rooms.RoomID || ' ' || Customer.LName || ', ' || Customer.FName ELSE 'Room: ' || Rooms.RoomID  END '" + cd.addDays(1).toString(Qt::ISODate) + "', "
+    "CASE WHEN Reservations.CheckIn = '" + cd.addDays(2).toString(Qt::ISODate) + "' THEN 'Room: ' || Rooms.RoomID || ' ' || Customer.LName || ', ' || Customer.FName ELSE 'Room: ' || Rooms.RoomID  END '" + cd.addDays(2).toString(Qt::ISODate) + "', "
+    "CASE WHEN Reservations.CheckIn = '" + cd.addDays(3).toString(Qt::ISODate) + "' THEN 'Room: ' || Rooms.RoomID || ' ' || Customer.LName || ', ' || Customer.FName ELSE 'Room: ' || Rooms.RoomID  END '" + cd.addDays(3).toString(Qt::ISODate) + "', "
+    "CASE WHEN Reservations.CheckIn = '" + cd.addDays(4).toString(Qt::ISODate) + "' THEN 'Room: ' || Rooms.RoomID || ' ' || Customer.LName || ', ' || Customer.FName ELSE 'Room: ' || Rooms.RoomID  END '" + cd.addDays(4).toString(Qt::ISODate) + "', "
+    "CASE WHEN Reservations.CheckIn = '" + cd.addDays(5).toString(Qt::ISODate) + "' THEN 'Room: ' || Rooms.RoomID || ' ' || Customer.LName || ', ' || Customer.FName ELSE 'Room: ' || Rooms.RoomID  END '" + cd.addDays(5).toString(Qt::ISODate) + "', "
+    "CASE WHEN Reservations.CheckIn = '" + cd.addDays(6).toString(Qt::ISODate) + "' THEN 'Room: ' || Rooms.RoomID || ' ' || Customer.LName || ', ' || Customer.FName ELSE 'Room: ' || Rooms.RoomID  END '" + cd.addDays(6).toString(Qt::ISODate) + "' "
+    "FROM Rooms LEFT JOIN Reservations ON Rooms.RoomID = Reservations.RoomID "
+    "LEFT JOIN Customer ON Reservations.CusID = Customer.CusID");
+    for(int i = 0; i < 7; i++) {
+        ui->DataTable->setColumnWidth(i, 150);
+    }
+    ui->DataTable->setVerticalHeader(vertHeader);
+    ui->Day1->setText(current);
+    ui->Day2->setText(cd.addDays(1).toString(Qt::ISODate));
+    ui->Day3->setText(cd.addDays(2).toString(Qt::ISODate));
+    ui->Day4->setText(cd.addDays(3).toString(Qt::ISODate));
+    ui->Day5->setText(cd.addDays(4).toString(Qt::ISODate));
+    ui->Day6->setText(cd.addDays(5).toString(Qt::ISODate));
+    ui->Day7->setText(cd.addDays(6).toString(Qt::ISODate));
+
 }
 
 void DashBoard::on_SubmitButon_clicked()
@@ -185,6 +210,34 @@ void DashBoard::setRoomButton(int roomNumber, QPushButton* button)          // C
     //int statusTemp = rand() % 4 + 0;        // query for status
     //
     setColor(roomStatus(status), button);
+}
+
+void DashBoard::setRoomButtonDaily(int roomNumber, QString cd, QPushButton* button) {
+
+    QSqlQuery* qry = new QSqlQuery(db);
+    if(qry->prepare("SELECT RoomID FROM Reservations WHERE CheckIn IS '" + cd + "' AND RoomID IS " + QString::number(roomNumber) + ";")) {
+        qry->exec();
+        qDebug() << cd;
+        if(qry->first())
+        {
+            qDebug() << qry->value(0).toInt();
+            QString* buttonText = new QString("Room " + QString::number(roomNumber) + " Status: Reserved");
+            button->setText(*buttonText);
+            setColor(roomStatus(1), button);
+        } else {
+            QString* buttonText = new QString("Room " + QString::number(roomNumber) + " Status: Available");
+            button->setText(*buttonText);
+            setColor(roomStatus(AVAILABLE), button);
+        }
+
+        qDebug() << " did it.";
+    } else {
+        QSqlError error = qry->lastError();
+        qDebug() << "Nope";
+    }
+    //QString* buttonText = new QString("Room " + QString::number(roomNumber) + " Status: " + getStatusString(status));
+   // button->setText(*buttonText);
+   // setColor(roomStatus(status), button);
 }
 
 QString DashBoard::getStatusString(int status)
@@ -327,6 +380,7 @@ void DashBoard::updateTable(QString rawString)
         qDebug() << "Failed to prepare query.";
         qDebug() << "Database says: " + error.databaseText();
      }
+     ui->DataTable->resizeColumnsToContents();
 }
 
 // Room status buttons for Capabillity one
@@ -452,4 +506,78 @@ void DashBoard::on_changeAvailable_clicked()
     setRoomButton(roomNum, roomPtr);
     setRoomDetails(roomNum, roomPtr);
 
+}
+
+void DashBoard::dailyButtonUpdate(QString cd) {
+    setRoomButtonDaily(10, cd, ui->RoomButton_10);
+    setRoomButtonDaily(11, cd, ui->RoomButton_11);
+    setRoomButtonDaily(12, cd, ui->RoomButton_12);
+    setRoomButtonDaily(13, cd, ui->RoomButton_13);
+    setRoomButtonDaily(14, cd, ui->RoomButton_14);
+    setRoomButtonDaily(15, cd, ui->RoomButton_15);
+    setRoomButtonDaily(16, cd, ui->RoomButton_16);
+    setRoomButtonDaily(17, cd, ui->RoomButton_17);
+    setRoomButtonDaily(18, cd, ui->RoomButton_18);
+    setRoomButtonDaily(19, cd, ui->RoomButton_19);
+    setRoomButtonDaily(20, cd, ui->RoomButton_20);
+    setRoomButtonDaily(21, cd, ui->RoomButton_21);
+    setRoomButtonDaily(22, cd, ui->RoomButton_22);
+    setRoomButtonDaily(23, cd, ui->RoomButton_23);
+    setRoomButtonDaily(24, cd, ui->RoomButton_24);
+}
+
+void DashBoard::on_Day1_clicked()
+{
+    QDate cd = QDate::currentDate();
+    QString current = cd.toString(Qt::ISODate);
+    ui->stackedWidgetRDB->setCurrentIndex(0);
+    dailyButtonUpdate(current);
+}
+
+void DashBoard::on_Day2_clicked()
+{
+    QDate cd = QDate::currentDate();
+    QString current = cd.addDays(1).toString(Qt::ISODate);
+    ui->stackedWidgetRDB->setCurrentIndex(0);
+    dailyButtonUpdate(current);
+}
+
+void DashBoard::on_Day3_clicked()
+{
+    QDate cd = QDate::currentDate();
+    QString current = cd.addDays(2).toString(Qt::ISODate);
+    ui->stackedWidgetRDB->setCurrentIndex(0);
+    dailyButtonUpdate(current);
+}
+
+void DashBoard::on_Day4_clicked()
+{
+    QDate cd = QDate::currentDate();
+    QString current = cd.addDays(3).toString(Qt::ISODate);
+    ui->stackedWidgetRDB->setCurrentIndex(0);
+    dailyButtonUpdate(current);
+}
+
+void DashBoard::on_Day5_clicked()
+{
+    QDate cd = QDate::currentDate();
+    QString current = cd.addDays(4).toString(Qt::ISODate);
+    ui->stackedWidgetRDB->setCurrentIndex(0);
+    dailyButtonUpdate(current);
+}
+
+void DashBoard::on_Day6_clicked()
+{
+    QDate cd = QDate::currentDate();
+    QString current = cd.addDays(5).toString(Qt::ISODate);
+    ui->stackedWidgetRDB->setCurrentIndex(0);
+    dailyButtonUpdate(current);
+}
+
+void DashBoard::on_Day7_clicked()
+{
+    QDate cd = QDate::currentDate();
+    QString current = cd.addDays(6).toString(Qt::ISODate);
+    ui->stackedWidgetRDB->setCurrentIndex(0);
+    dailyButtonUpdate(current);
 }
