@@ -39,8 +39,8 @@ bool DashBoard::databaseInit()
 {
     // Establish connection with SQLite Database
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("AntaresRDB.db");
-    //db.setDatabaseName("C://Users//Grant//Desktop//orig//AntaresRDB.db");
+    //db.setDatabaseName("AntaresRDB.db");
+    db.setDatabaseName("C://Users//Grant//Desktop//fuck//AntaresRDB.db");
     if (!db.open())
     {
        qDebug() << "Error: connection with database fail";
@@ -737,7 +737,6 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
 
         menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
         roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
-
         connect(Bathroom, &QAction::toggled, this, &DashBoard::bathEdit);
         connect(Towels, &QAction::toggled, this, &DashBoard::towelEdit);
         connect(Vacuum, &QAction::toggled, this, &DashBoard::vacuumEdit);
@@ -746,22 +745,29 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
 
         //  GRANT
         // SQL query here to check if the selected room(defined by variable roomID) is currently available
+        QSqlQuery* qry = new QSqlQuery(db);
+        int set = 0;
+        if(qry->prepare("SELECT Status FROM Rooms WHERE RoomID = " + QString::number(roomID)) )        {
+           qry->exec();
+           qry->first();
+           set = qry->value(0).toInt();
+           qDebug() << QString::number(set);
+           if(set != 0)
+           {
+               qDebug() << "Present 'Make room unavaible' option";
+               QAction* makeUn= new QAction("Make room unavaible", this);
 
-        //if()
-        {
-            qDebug() << "Present 'Make room unavaible' option";
-            QAction* makeUn= new QAction("Make room unavaible", this);
+               menu->addSection("Availability");
+               menu->addAction(makeUn);
+               makeUn->setStatusTip("Make the selected room unavaible");
+               makeUn->setCheckable(true);
 
-            menu->addSection("Availability");
-            menu->addAction(makeUn);
-            makeUn->setStatusTip("Make the selected room unavaible");
-            makeUn->setCheckable(true);
-
-            connect(Electronics, &QAction::toggled, this, &DashBoard::elecEdit);
-        }
-        //else
-        {
-            qDebug() << "The selected room is already unavailable";
+               connect(makeUn, &QAction::toggled, this, &DashBoard::makeRoomUnavailable);
+           }
+           else
+           {
+              qDebug() << "The selected room is already unavailable";
+           }
         }
 
     }
@@ -805,7 +811,7 @@ void DashBoard::deleteReservation()
 
 void DashBoard::bathEdit()
 {
-
+//df
     //edit here
     QSqlQuery* qry = new QSqlQuery(db);
     int set = 0;
@@ -964,14 +970,16 @@ void DashBoard::elecEdit()
 void DashBoard::makeRoomUnavailable()
 {
     QSqlQuery* qry = new QSqlQuery(db);
+    int set = 0;
 
-    if(qry->prepare(""))
+    if(qry->prepare("SELECT Status FROM Rooms WHERE RoomID = " + QString::number(roomID)))
     {
        qry->exec();
        qry->first();
 
        //  GRANT
        // SQL query to make the room unavaiable here
+       qry->prepare("UPDATE Rooms SET Status = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
 
        qry->exec();
        updateTable("SELECT * FROM Housekeeping");
