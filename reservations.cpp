@@ -11,6 +11,17 @@ Reservations::Reservations(QWidget *parent) :
     this->setWindowTitle("Hotel Antares Reservation");
 }
 
+Reservations::Reservations(QSqlDatabase* db, int roomNumber) :
+    ui(new Ui::Reservations)
+{
+    // Nothing before this line
+    ui->setupUi(this);
+    // Change the window title
+    dbRef= db;
+    curRoom = roomNumber;
+    this->setWindowTitle("Hotel Antares Reservation");
+}
+
 Reservations::~Reservations()
 {
     delete ui;
@@ -38,6 +49,17 @@ void Reservations::on_ConfirmButton_clicked()
         + LicensePlate + ");";
 
     // Execute Query
+    QSqlQuery* qry = new QSqlQuery(*dbRef);
+    if( qry->prepare(insertQuery))
+    {
+       qry->exec();
+       qry->first();
+       qDebug() << " successfully returned.";
+    } else {
+       QSqlError error = qry->lastError();
+       qDebug() << "Failed to prepare query.";
+       qDebug() << "Database says: " + error.databaseText();
+    }
 
     // Close the window after successful query
     this->close();

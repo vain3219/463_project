@@ -38,7 +38,6 @@ DashBoard::~DashBoard()
 bool DashBoard::databaseInit()
 {
     // Establish connection with SQLite Database
-    //db = new DbManager("AntaresRDB.db");
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("AntaresRDB.db");
     //db.setDatabaseName("C://Users//Grant//Desktop//orig//AntaresRDB.db");
@@ -256,6 +255,7 @@ void DashBoard::setBlankPage() {
     //  elements are unecessary
     ui->changeAvailable->hide();
     ui->doNothing->hide();
+    ui->makeRes->hide();
     if(ui->stackedWidgetSR->currentIndex() != 0)
     {
         ui->stackedWidgetSR->setCurrentWidget(ui->BlankPage);
@@ -402,6 +402,7 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
 {
     ui->changeAvailable->hide();
     ui->doNothing->hide();
+    ui->makeRes->hide();
     int status = 0;
     QString details = "<body><style>#boxes {content: "";display: table;clear: both;}"
         "div {float: left;height: 470px;width: 23%;padding: 0 10px;}</style>"
@@ -421,14 +422,17 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
        qDebug() << "Database says: " + error.databaseText();
     }
 
-    if(status == AVAILABLE) {
+    if(status == AVAILABLE)
+    {
         // CAPABILITY 6 BUTTON PRESSED
-
+        ui->makeRes->show();
     }
-    else if(status == OCCUPIED) {
+    else if(status == OCCUPIED)
+    {
         // CAPABILITY 6 BUTTON PRESSED
     }
-    else if(status == DIRTY) {
+    else if(status == DIRTY)
+    {
         details += QString::number(roomNumber)+ " - DIRTY </h1>\n"     // CAPABILITY 1
         "<p>This room is currently dirty.</p>"
         "<p>Do you want to make the room available?</p>"
@@ -436,7 +440,8 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
         ui->changeAvailable->show();
         ui->doNothing->show();
     }
-    else if(status == MAINTENANCE) {
+    else if(status == MAINTENANCE)
+    {
         details += QString::number(roomNumber)+ " - DIRTY </h1>\n"     // CAPABILITY 1
         "<p>This room is currently under maintenance.</p>"
         "<p>Do you want to make the room available?</p>"
@@ -978,4 +983,13 @@ void DashBoard::makeRoomUnavailable()
         qDebug() << "Failed to prepare query.";
         qDebug() << "Database says: " + error.databaseText();
     }
+}
+
+void DashBoard::on_makeRes_clicked()
+{
+    Reservations* loadMePls = new Reservations(&db, roomNum);
+    // Disable window resizing
+    loadMePls->setFixedSize(loadMePls->size());
+    loadMePls->setModal(1);
+    loadMePls->show();
 }

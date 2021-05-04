@@ -123,6 +123,8 @@ private slots:
 
     void on_DataTable_customContextMenuRequested(const QPoint &pos);
 
+    void on_makeRes_clicked();
+
 private:
     Ui::DashBoard *ui;
     QSqlDatabase db;

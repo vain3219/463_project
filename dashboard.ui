@@ -415,6 +415,19 @@
        <string>No</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="makeRes">
+      <property name="geometry">
+       <rect>
+        <x>1000</x>
+        <y>630</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Make a Reservation</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="DBViewPage">
      <widget class="QTableView" name="DataTable">
