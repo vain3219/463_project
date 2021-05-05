@@ -134,6 +134,7 @@ private:
     int roomNum;
     int ResID;
     int roomID;
+    QString selectedDay;
     QPushButton* roomPtr;
 
     // Databse initialization

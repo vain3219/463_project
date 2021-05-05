@@ -20,6 +20,7 @@ Reservations::Reservations(QSqlDatabase* db, int roomNumber) :
     dbRef= db;
     curRoom = roomNumber;
     this->setWindowTitle("Hotel Antares Reservation");
+    ref = *db;
 }
 
 Reservations::~Reservations()
@@ -30,26 +31,21 @@ Reservations::~Reservations()
 void Reservations::on_ConfirmButton_clicked()
 {
     // Do text extraction from input fields here
-     QString FName = ui->FNameField->text();
-     QString LName = ui->LNameField->text();
-     QString CheckIn = ui->CheckInField->text();
-     QString Checkout = ui->CheckoutField->text();
-     QString Phone = ui->PhoneField->text();
-     QString Address = ui->AddressField->text();
-     QString Email = ui->EmailField->text();
-     QString IDNum = ui->IDNumField->text();
-     QString IDState = ui->IDStateField->text();
-     QString LicensePlate = ui->LicensePlateField->text();
+     QString FName = "\"" + ui->FNameField->text() + "\"";
+     QString LName = "\"" + ui->LNameField->text() + "\"";
+     QString CheckIn = "\"" + ui->CheckInField->text() + "\"";
+     QString Checkout = "\"" + ui->CheckoutField->text() + "\"";
+     QString Phone = "\"" + ui->PhoneField->text() + "\"";
+     QString Address = "\"" + ui->AddressField->text() + "\"";
+     QString Email = "\"" + ui->EmailField->text() + "\"";
+     QString IDNum = "\"" + ui->IDNumField->text() + "\"";
+     QString IDState = "\"" + ui->IDStateField->text() + "\"";
+     QString LicensePlate = "\"" + ui->LicensePlateField->text() + "\"";
 
     // Create query String
-    QString insertQuery = "INSERT INTO RESERVATIONS VALUES ("
-        + FName + ","
-        + LName + ","
-        /* ... */
-        + LicensePlate + ");";
-
+    QString insertQuery = "INSERT INTO Customer (FName, LName, IDNum, IDState, LicensePlate, Address, Phone, Email) values (" + FName + "," + LName + "," + IDNum + "," + IDState + "," + LicensePlate + "," + Address + "," + Phone + "," + Email + ")";
     // Execute Query
-    QSqlQuery* qry = new QSqlQuery(*dbRef);
+    QSqlQuery* qry = new QSqlQuery(ref);
     if( qry->prepare(insertQuery))
     {
        qry->exec();

@@ -40,7 +40,7 @@ bool DashBoard::databaseInit()
     // Establish connection with SQLite Database
     db = QSqlDatabase::addDatabase("QSQLITE");
     //db.setDatabaseName("AntaresRDB.db");
-    db.setDatabaseName("C://Users//Grant//Desktop//fuck//AntaresRDB.db");
+    db.setDatabaseName("C://Users//Grant//Downloads//AntaresRDB.db");
     if (!db.open())
     {
        qDebug() << "Error: connection with database fail";
@@ -109,7 +109,7 @@ void DashBoard::on_HousekeepingButton_clicked()
     hkEdit = true;
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("SELECT * FROM Housekeeping");
+    updateTable("SELECT * FROM Rooms");
 }
 
 void DashBoard::on_InfoButton_clicked()
@@ -422,7 +422,7 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
        qDebug() << "Database says: " + error.databaseText();
     }
 
-    if(status == AVAILABLE)
+    if(status == AVAILABLE && selectedDay != QDate::currentDate().toString())
     {
         // CAPABILITY 6 BUTTON PRESSED
         ui->makeRes->show();
@@ -618,6 +618,7 @@ void DashBoard::on_Day1_clicked()
 {
     QDate cd = QDate::currentDate();
     QString current = cd.toString(Qt::ISODate);
+    selectedDay = cd.toString();
     ui->stackedWidgetRDB->setCurrentIndex(0);
     dailyButtonUpdate(current);
 }
@@ -626,6 +627,7 @@ void DashBoard::on_Day2_clicked()
 {
     QDate cd = QDate::currentDate();
     QString current = cd.addDays(1).toString(Qt::ISODate);
+    selectedDay = cd.addDays(1).toString();
     ui->stackedWidgetRDB->setCurrentIndex(0);
     dailyButtonUpdate(current);
 }
@@ -634,6 +636,7 @@ void DashBoard::on_Day3_clicked()
 {
     QDate cd = QDate::currentDate();
     QString current = cd.addDays(2).toString(Qt::ISODate);
+    selectedDay = cd.addDays(2).toString();
     ui->stackedWidgetRDB->setCurrentIndex(0);
     dailyButtonUpdate(current);
 }
@@ -642,6 +645,7 @@ void DashBoard::on_Day4_clicked()
 {
     QDate cd = QDate::currentDate();
     QString current = cd.addDays(3).toString(Qt::ISODate);
+    selectedDay = cd.addDays(3).toString();
     ui->stackedWidgetRDB->setCurrentIndex(0);
     dailyButtonUpdate(current);
 }
@@ -650,6 +654,7 @@ void DashBoard::on_Day5_clicked()
 {
     QDate cd = QDate::currentDate();
     QString current = cd.addDays(4).toString(Qt::ISODate);
+    selectedDay = cd.addDays(4).toString();
     ui->stackedWidgetRDB->setCurrentIndex(0);
     dailyButtonUpdate(current);
 }
@@ -658,6 +663,7 @@ void DashBoard::on_Day6_clicked()
 {
     QDate cd = QDate::currentDate();
     QString current = cd.addDays(5).toString(Qt::ISODate);
+    selectedDay = cd.addDays(5).toString();
     ui->stackedWidgetRDB->setCurrentIndex(0);
     dailyButtonUpdate(current);
 }
@@ -666,6 +672,7 @@ void DashBoard::on_Day7_clicked()
 {
     QDate cd = QDate::currentDate();
     QString current = cd.addDays(6).toString(Qt::ISODate);
+    selectedDay = cd.addDays(6).toString();
     ui->stackedWidgetRDB->setCurrentIndex(0);
     dailyButtonUpdate(current);
 }
@@ -815,7 +822,7 @@ void DashBoard::bathEdit()
     //edit here
     QSqlQuery* qry = new QSqlQuery(db);
     int set = 0;
-    if(qry->prepare("SELECT Bathroom FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
+    if(qry->prepare("SELECT Bathroom FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
        qry->exec();
        qry->first();
@@ -823,15 +830,15 @@ void DashBoard::bathEdit()
 
 
        if(set == 0) {
-           qry->prepare("UPDATE Housekeeping SET Bathroom = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Bathroom = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " requires bathroom cleaning";
        }
        else {
-           qry->prepare("UPDATE Housekeeping SET Bathroom = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Bathroom = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " does not require bathroom cleaning";
        }
        qry->exec();
-       updateTable("SELECT * FROM Housekeeping");
+       updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -847,7 +854,7 @@ void DashBoard::towelEdit()
     //edit here
     QSqlQuery* qry = new QSqlQuery(db);
     int set = 0;
-    if(qry->prepare("SELECT Towels FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
+    if(qry->prepare("SELECT Towels FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
        qry->exec();
        qry->first();
@@ -855,15 +862,15 @@ void DashBoard::towelEdit()
 
 
        if(set == 0) {
-           qry->prepare("UPDATE Housekeeping SET Towels = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Towels = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " requires towels";
        }
        else {
-           qry->prepare("UPDATE Housekeeping SET Towels = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Towels = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " does not require towels";
        }
        qry->exec();
-       updateTable("SELECT * FROM Housekeeping");
+       updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -878,7 +885,7 @@ void DashBoard::vacuumEdit()
 {
     QSqlQuery* qry = new QSqlQuery(db);
     int set = 0;
-    if(qry->prepare("SELECT Vacuum FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
+    if(qry->prepare("SELECT Vacuum FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
        qry->exec();
        qry->first();
@@ -886,15 +893,15 @@ void DashBoard::vacuumEdit()
 
 
        if(set == 0) {
-           qry->prepare("UPDATE Housekeeping SET Vacuum = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Vacuum = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " requires vacuuming";
        }
        else {
-           qry->prepare("UPDATE Housekeeping SET Vacuum = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Vacuum = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " does not require vacuuming";
        }
        qry->exec();
-       updateTable("SELECT * FROM Housekeeping");
+       updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -909,7 +916,7 @@ void DashBoard::dustEdit()
 {
     QSqlQuery* qry = new QSqlQuery(db);
     int set = 0;
-    if(qry->prepare("SELECT Dusting FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
+    if(qry->prepare("SELECT Dusting FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
        qry->exec();
        qry->first();
@@ -917,15 +924,15 @@ void DashBoard::dustEdit()
 
 
        if(set == 0) {
-           qry->prepare("UPDATE Housekeeping SET Dusting = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Dusting = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " requires dusting";
        }
        else {
-           qry->prepare("UPDATE Housekeeping SET Dusting = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Dusting = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " does not require dusting";
        }
        qry->exec();
-       updateTable("SELECT * FROM Housekeeping");
+       updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -940,7 +947,7 @@ void DashBoard::elecEdit()
 {
     QSqlQuery* qry = new QSqlQuery(db);
     int set = 0;
-    if(qry->prepare("SELECT Electronics FROM Housekeeping WHERE RoomID = " + QString::number(roomID)) )
+    if(qry->prepare("SELECT Electronics FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
        qry->exec();
        qry->first();
@@ -948,15 +955,15 @@ void DashBoard::elecEdit()
 
 
        if(set == 0) {
-           qry->prepare("UPDATE Housekeeping SET Electronics = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Electronics = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " requires electronic maintenance";
        }
        else {
-           qry->prepare("UPDATE Housekeeping SET Electronics = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+           qry->prepare("UPDATE Rooms SET Electronics = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
            qDebug() << "Room " + QString::number(roomID) + " does not require electronic maintenance";
        }
        qry->exec();
-       updateTable("SELECT * FROM Housekeeping");
+       updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -982,7 +989,7 @@ void DashBoard::makeRoomUnavailable()
        qry->prepare("UPDATE Rooms SET Status = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
 
        qry->exec();
-       updateTable("SELECT * FROM Housekeeping");
+       updateTable("SELECT * FROM Rooms");
 
     }
     else
