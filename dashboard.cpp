@@ -39,8 +39,8 @@ bool DashBoard::databaseInit()
 {
     // Establish connection with SQLite Database
     db = QSqlDatabase::addDatabase("QSQLITE");
-    //db.setDatabaseName("AntaresRDB.db");
-    db.setDatabaseName("C://Users//Grant//Downloads//AntaresRDB.db");
+    db.setDatabaseName("AntaresRDB.db");
+//    db.setDatabaseName("C://Users//Grant//Downloads//AntaresRDB.db");
     if (!db.open())
     {
        qDebug() << "Error: connection with database fail";
@@ -243,7 +243,7 @@ void DashBoard::on_MakeResButton_clicked()
    resEdit = false;
    hkEdit = false;
    // Create new form object and display the window
-   Reservations* loadMe = new Reservations;
+   Reservations* loadMe = new Reservations(&db);
    // Disable window resizing
    loadMe->setFixedSize(loadMe->size());
    loadMe->setModal(1);

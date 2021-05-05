@@ -5,7 +5,9 @@
 #include <QSqlQuery>
 #include <qDebug>
 #include <QSqlError>
+#include <QRandomGenerator>
 #include <QDate>
+
 
 namespace Ui {
 class Reservations;
@@ -19,7 +21,10 @@ public:
     explicit Reservations(QWidget *parent = nullptr);
 
     Reservations(QSqlDatabase*, int);
+    Reservations(QSqlDatabase*);
     ~Reservations();
+
+    int FindAvailableRoomOfType(int type);
 
 private slots:
     void on_ConfirmButton_clicked();
