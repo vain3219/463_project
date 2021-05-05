@@ -20,6 +20,9 @@ GuestInfo::GuestInfo(QSqlDatabase* db, int id) :
 
     // Fills the text fields with their appropriate data
     setTextFields(db, id);
+
+    dbRef = db;
+    cusId = id;
 }
 
 GuestInfo::~GuestInfo()
@@ -35,10 +38,33 @@ void GuestInfo::on_submit_clicked()
     loadMeUp->setFixedSize(loadMeUp->size());
     loadMeUp->exec();
 
+    QString FName = "\"" + ui->FName->text() + "\"";
+    QString LName = "\"" + ui->LName->text() + "\"";
+    QString IDNum = "\"" + ui->IDNum->text() + "\"";
+    QString IDState = "\"" + ui->IDState->text() + "\"";
+    QString LicensePlate = "\"" + ui->LicensePlate->text() + "\"";
+    QString Address = "\"" + ui->Address->text() + "\"";
+    QString Phone = "\"" + ui->Phone->text() + "\"";
+    QString Email = "\"" + ui->Email->text() + "\"";
+
     if(loadMeUp->isAccepted()) {
+        QSqlQuery* qry = new QSqlQuery(*dbRef);
         /*
          * Submit query here to edit the information
          */
+        // QSqlQuery* qry = new QSqlQuery(*dbRef);
+        QString rawString = "UPDATE Customer SET FName = " + FName + ", LName = " + LName + ", IDNum = " + IDNum + ", IDState = " + IDState + ", LicensePlate = " + LicensePlate + ", Address = " + Address + ", Phone = " + Phone + ", Email = " + Email + "WHERE CusID = " + QString::number(cusId);
+        qDebug() << "cusId = " << cusId;
+        if(qry->prepare(rawString)) {
+            qry->exec();
+
+            qDebug() << "Query successful.";
+        } else {
+            QSqlError error = qry->lastError();
+            qDebug() << "Failed to prepare query.";
+            qDebug() << "Databvase says: " + error.databaseText();
+        }
+
         qDebug() << "Change submitted.";
     } else {
         qDebug() << "No changes were made.";
@@ -46,6 +72,7 @@ void GuestInfo::on_submit_clicked()
 
     loadMeUp->close();
     delete loadMeUp;
+    this->close();
 }
 
 void GuestInfo::on_back_clicked()
