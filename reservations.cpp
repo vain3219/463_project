@@ -57,6 +57,19 @@ void Reservations::on_ConfirmButton_clicked()
        qDebug() << "Database says: " + error.databaseText();
     }
 
+    insertQuery = "INSERT INTO Reservations (DateMade, CheckIn, Checkout) values (\"" + QDate::currentDate().toString() + "\"," + CheckIn + "," + Checkout + ")";
+    // Execute Query
+    qry = new QSqlQuery(ref);
+    if( qry->prepare(insertQuery))
+    {
+       qry->exec();
+       qry->first();
+       qDebug() << " successfully returned.";
+    } else {
+       QSqlError error = qry->lastError();
+       qDebug() << "Failed to prepare query.";
+       qDebug() << "Database says: " + error.databaseText();
+    }
     // Close the window after successful query
     this->close();
 }

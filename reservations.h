@@ -5,6 +5,7 @@
 #include <QSqlQuery>
 #include <qDebug>
 #include <QSqlError>
+#include <QDate>
 
 namespace Ui {
 class Reservations;
