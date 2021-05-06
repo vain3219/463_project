@@ -125,12 +125,20 @@ private slots:
 
     void on_makeRes_clicked();
 
+    void on_checkin_clicked();
+
+    void on_checkout_clicked();
+
+    void on_walkin_clicked();
+
 private:
     Ui::DashBoard *ui;
     QSqlDatabase db;
     bool guestEdit;
     bool resEdit;
     bool hkEdit;
+    bool checkin;
+    bool checkout;
     int roomNum;
     int ResID;
     int roomID;
@@ -188,5 +196,11 @@ private:
 
     //
     void makeRoomUnavailable();
+
+    //
+    void checkOutGuest();
+
+    //
+    void checkInGuest();
 };
 #endif // DASHBOARD_H

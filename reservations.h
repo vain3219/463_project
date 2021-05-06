@@ -22,6 +22,7 @@ public:
 
     Reservations(QSqlDatabase*, int);
     Reservations(QSqlDatabase*);
+    Reservations(QSqlDatabase*, QString date);
     ~Reservations();
 
     int FindAvailableRoomOfType(int type);
@@ -33,7 +34,6 @@ private slots:
 
 private:
     Ui::Reservations *ui;
-    QSqlDatabase* dbRef;    // Reference to the database for executing queries
     int curRoom;            //Current room number for the reservation
     QSqlDatabase ref;
 };

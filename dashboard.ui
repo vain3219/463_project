@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Guest Info</string>
+     <string>Guest Service</string>
     </property>
    </widget>
    <widget class="QPushButton" name="GuestsButton">
@@ -172,9 +172,9 @@
      <widget class="QPushButton" name="RoomButton_10">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>210</x>
         <y>120</y>
-        <width>161</width>
+        <width>231</width>
         <height>21</height>
        </rect>
       </property>
@@ -185,9 +185,9 @@
      <widget class="QPushButton" name="RoomButton_11">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>210</x>
         <y>170</y>
-        <width>161</width>
+        <width>231</width>
         <height>21</height>
        </rect>
       </property>
@@ -198,9 +198,9 @@
      <widget class="QPushButton" name="RoomButton_12">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>210</x>
         <y>220</y>
-        <width>161</width>
+        <width>231</width>
         <height>21</height>
        </rect>
       </property>
@@ -211,9 +211,9 @@
      <widget class="QPushButton" name="RoomButton_13">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>210</x>
         <y>270</y>
-        <width>161</width>
+        <width>231</width>
         <height>21</height>
        </rect>
       </property>
@@ -224,9 +224,9 @@
      <widget class="QPushButton" name="RoomButton_14">
       <property name="geometry">
        <rect>
-        <x>280</x>
+        <x>210</x>
         <y>320</y>
-        <width>161</width>
+        <width>231</width>
         <height>21</height>
        </rect>
       </property>
@@ -237,9 +237,9 @@
      <widget class="QPushButton" name="RoomButton_15">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>480</x>
         <y>120</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -250,9 +250,9 @@
      <widget class="QPushButton" name="RoomButton_16">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>480</x>
         <y>170</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -263,9 +263,9 @@
      <widget class="QPushButton" name="RoomButton_17">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>480</x>
         <y>220</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -276,9 +276,9 @@
      <widget class="QPushButton" name="RoomButton_18">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>480</x>
         <y>270</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -289,9 +289,9 @@
      <widget class="QPushButton" name="RoomButton_19">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>480</x>
         <y>320</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -304,7 +304,7 @@
        <rect>
         <x>760</x>
         <y>120</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -317,7 +317,7 @@
        <rect>
         <x>760</x>
         <y>170</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -330,7 +330,7 @@
        <rect>
         <x>760</x>
         <y>220</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -343,7 +343,7 @@
        <rect>
         <x>760</x>
         <y>270</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -356,7 +356,7 @@
        <rect>
         <x>760</x>
         <y>320</y>
-        <width>161</width>
+        <width>241</width>
         <height>21</height>
        </rect>
       </property>
@@ -453,7 +453,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="BlankPage"/>
       <widget class="QWidget" name="ReservationPage">
@@ -589,6 +589,47 @@
         </property>
         <property name="text">
          <string>PushButton</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="services">
+       <widget class="QPushButton" name="checkin">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>40</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Check-In</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="checkout">
+        <property name="geometry">
+         <rect>
+          <x>600</x>
+          <y>40</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Check Out</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="walkin">
+        <property name="geometry">
+         <rect>
+          <x>930</x>
+          <y>40</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Walk-In</string>
         </property>
        </widget>
       </widget>

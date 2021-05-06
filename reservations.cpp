@@ -17,7 +17,6 @@ Reservations::Reservations(QSqlDatabase* db) :
     // Nothing before this line
     ui->setupUi(this);
     // Change the window title
-    dbRef= db;
     this->setWindowTitle("Hotel Antares Reservation");
     ref = *db;
     curRoom = -1;
@@ -35,7 +34,6 @@ Reservations::Reservations(QSqlDatabase* db, int roomNumber) :
     // Nothing before this line
     ui->setupUi(this);
     // Change the window title
-    dbRef= db;
     curRoom = roomNumber;
     this->setWindowTitle("Hotel Antares Reservation");
     ref = *db;
@@ -45,6 +43,25 @@ Reservations::Reservations(QSqlDatabase* db, int roomNumber) :
     ui->RoomMenu->insertItem(1, "Double Queen.....................$119.99");
     ui->RoomMenu->insertItem(2, "Double Queen with Kitchen......$149.99");
     ui->RoomMenu->insertItem(3, "King.................................$249.99");
+}
+
+Reservations::Reservations(QSqlDatabase* db, QString date) :
+    ui(new Ui::Reservations)
+{
+    // Nothing before this line
+    ui->setupUi(this);
+    // Change the window title
+    this->setWindowTitle("Hotel Antares Reservation");
+    ref = *db;
+    curRoom = -1;
+
+    ui->RoomMenu->setMaxCount(4);
+    ui->RoomMenu->insertItem(0, "Suite................................$75.99");
+    ui->RoomMenu->insertItem(1, "Double Queen.....................$119.99");
+    ui->RoomMenu->insertItem(2, "Double Queen with Kitchen......$149.99");
+    ui->RoomMenu->insertItem(3, "King.................................$249.99");
+
+    ui->CheckInField->setText(date);
 }
 
 Reservations::~Reservations()
@@ -142,8 +159,8 @@ void Reservations::on_ConfirmButton_clicked()
     }
 
     // Add payment using dist(checkout.julianDays - checkIn.julianDays)*roomType(price)
-    QDate in= QDate::fromString(ui->CheckInField->text(),Qt::ISODate);//QDate(QStringRef(&CheckIn,0,4).toInt(),QStringRef(&CheckIn,5,2).toInt(),QStringRef(&CheckIn,8,2).toInt());
-    QDate out= QDate::fromString(ui->CheckoutField->text(), Qt::ISODate);//(QStringRef(&Checkout,0,4).toInt(),QStringRef(&Checkout,5,2).toInt(),QStringRef(&Checkout,8,2).toInt());
+    QDate in= QDate::fromString(ui->CheckInField->text(),Qt::ISODate);
+    QDate out= QDate::fromString(ui->CheckoutField->text(), Qt::ISODate);
 
     int days = out.toJulianDay() - in.toJulianDay();
     qDebug() << "Dates: " + out.toString() + "  " + in.toString();

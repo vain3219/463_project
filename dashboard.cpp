@@ -28,6 +28,7 @@ DashBoard::DashBoard(QWidget *parent)
 
     ui->DataTable->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->DataTable, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customMenuRequested(QPoint)));
+    emit ui->RoomsButton->clicked(true);
 }
 
 DashBoard::~DashBoard()
@@ -40,13 +41,13 @@ bool DashBoard::databaseInit()
     // Establish connection with SQLite Database
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("AntaresRDB.db");
-//    db.setDatabaseName("C://Users//Grant//Downloads//AntaresRDB.db");
+    //    db.setDatabaseName("C://Users//Grant//Downloads//AntaresRDB.db");
     if (!db.open())
     {
-       qDebug() << "Error: connection with database fail";
-       return false;
+        qDebug() << "Error: connection with database fail";
+        return false;
     } else {
-       qDebug() << "Database: connection ok";
+        qDebug() << "Database: connection ok";
     }
 
     // Attempt to populate the DataTable
@@ -75,15 +76,20 @@ void DashBoard::on_LogoutButton_clicked()
 void DashBoard::on_SearchButton_clicked()
 // Capability 7
 {
+    checkin = false;
+    checkout = false;
     guestEdit = true;
     resEdit = false;
     hkEdit = false;
     // Set the stacked widget to display the additional search GUI
     ui->stackedWidgetSR->setCurrentWidget(ui->SearchPage);
+    updateTable("SELECT Customer.CusID, Customer.FName, Customer.LName, Customer.Phone, Customer.Address, Reservations.CheckIn, Reservations.Checkout FROM Reservations INNER JOIN Customer ON Reservations.CusID = Customer.CusID");
 }
 
 void DashBoard::on_DailyButton_clicked()
 {
+    checkin = false;
+    checkout = false;
     guestEdit = true;
     resEdit = false;
     hkEdit = false;
@@ -100,14 +106,14 @@ void DashBoard::on_DailyButton_clicked()
     QSqlQuery* qry = new QSqlQuery(db);
     if( qry->prepare("SELECT sum(Rate) FROM RoomTypes INNER JOIN Reservations ON RoomTypes.Type = Reservations.RoomType INNER JOIN Rooms ON Rooms.ResID = Reservations.ResID where status = 1 ;"))
     {
-       qry->exec();
-       qry->first();
-       total = qry->value(0).toInt();
-       qDebug() << " successfully returned.";
+        qry->exec();
+        qry->first();
+        total = qry->value(0).toInt();
+        qDebug() << " successfully returned.";
     } else {
-       QSqlError error = qry->lastError();
-       qDebug() << "Failed to prepare query.";
-       qDebug() << "Database says: " + error.databaseText();
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
     ui->EarningsLabel->show();
     ui->EarningsLabel->setText("Today's Earnings: $" + QString::number(total));
@@ -115,6 +121,8 @@ void DashBoard::on_DailyButton_clicked()
 
 void DashBoard::on_GuestsButton_clicked()
 {
+    checkin = false;
+    checkout = false;
     guestEdit = true;
     resEdit = false;
     hkEdit = false;
@@ -125,6 +133,8 @@ void DashBoard::on_GuestsButton_clicked()
 
 void DashBoard::on_HousekeepingButton_clicked()
 {
+    checkin = false;
+    checkout = false;
     guestEdit = false;
     resEdit = false;
     hkEdit = true;
@@ -135,16 +145,21 @@ void DashBoard::on_HousekeepingButton_clicked()
 
 void DashBoard::on_InfoButton_clicked()
 {
-    guestEdit = true;
+    checkin = false;
+    checkout = false;
+    guestEdit = false;
     resEdit = false;
     hkEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("SELECT * FROM Customer");
+    ui->stackedWidgetSR->setCurrentIndex(4);
+    ui->DataTable->setModel(NULL);
 }
 
 void DashBoard::on_ReservationButton_clicked()
 {
+    checkin = false;
+    checkout = false;
     guestEdit = false;
     resEdit = true;
     hkEdit = false;
@@ -152,11 +167,13 @@ void DashBoard::on_ReservationButton_clicked()
     setBlankPage();
     // Set the stacked widget to display the additional reservation GUI
     ui->stackedWidgetSR->setCurrentWidget(ui->ReservationPage);
-        updateTable("SELECT * FROM Reservations");
+    updateTable("SELECT * FROM Reservations");
 }
 
 void DashBoard::on_RoomsButton_clicked()
 {
+    checkin = false;
+    checkout = false;
     guestEdit = false;
     resEdit = false;
     hkEdit = false;
@@ -169,6 +186,8 @@ void DashBoard::on_RoomsButton_clicked()
 
 void DashBoard::on_WeeklyButton_clicked()  // capability 2 FILL THIS IN
 {
+    checkin = false;
+    checkout = false;
     guestEdit = false;
     resEdit = false;
     hkEdit = false;
@@ -260,15 +279,17 @@ void DashBoard::on_SearchField_editingFinished()
 
 void DashBoard::on_MakeResButton_clicked()
 {
-   guestEdit = false;
-   resEdit = false;
-   hkEdit = false;
-   // Create new form object and display the window
-   Reservations* loadMe = new Reservations(&db);
-   // Disable window resizing
-   loadMe->setFixedSize(loadMe->size());
-   loadMe->setModal(1);
-   loadMe->show();
+    checkin = false;
+    checkout = false;
+    guestEdit = false;
+    resEdit = false;
+    hkEdit = false;
+    // Create new form object and display the window
+    Reservations* loadMe = new Reservations(&db);
+    // Disable window resizing
+    loadMe->setFixedSize(loadMe->size());
+    loadMe->setModal(1);
+    loadMe->show();
 }
 
 void DashBoard::setBlankPage() {
@@ -300,14 +321,14 @@ void DashBoard::setRoomButton(int roomNumber, QPushButton* button)          // C
     QSqlQuery* qry = new QSqlQuery(db);
     if( qry->prepare("SELECT Status FROM Rooms WHERE RoomID IS " + QString::number(roomNumber) + ";"))
     {
-       qry->exec();
-       qry->first();
-       status = qry->value(0).toInt();
-       qDebug() << " successfully returned.";
+        qry->exec();
+        qry->first();
+        status = qry->value(0).toInt();
+        qDebug() << " successfully returned.";
     } else {
-       QSqlError error = qry->lastError();
-       qDebug() << "Failed to prepare query.";
-       qDebug() << "Database says: " + error.databaseText();
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
     QString* buttonText = new QString("Room " + QString::number(roomNumber) + " Status: " + getStatusString(status));// + getStringStatus(Query));
     button->setText(*buttonText);
@@ -341,83 +362,83 @@ void DashBoard::setRoomButtonDaily(int roomNumber, QString cd, QPushButton* butt
         qDebug() << "Nope";
     }
     //QString* buttonText = new QString("Room " + QString::number(roomNumber) + " Status: " + getStatusString(status));
-   // button->setText(*buttonText);
-   // setColor(roomStatus(status), button);
+    // button->setText(*buttonText);
+    // setColor(roomStatus(status), button);
 }
 
 QString DashBoard::getStatusString(int status)
 {
     switch(status)
     {
-        case AVAILABLE:
-            return "Available";
-            break;
+    case AVAILABLE:
+        return "Available";
+        break;
 
-        case OCCUPIED:
-            return "Occupied";
-            break;
+    case OCCUPIED:
+        return "Occupied";
+        break;
 
-        case DIRTY:
-            return "Dirty";
-            break;
+    case DIRTY:
+        return "Dirty";
+        break;
 
-        case MAINTENANCE:
-            return "Maintenance Needed";
-            break;
+    case MAINTENANCE:
+        return "Maintenance Needed";
+        break;
 
-        default:
-            return "Contact Tech Support";
-            break;
+    default:
+        return "Contact Tech Support";
+        break;
     }
 }
 
 void DashBoard::setColor(roomStatus status, QPushButton* button) {
     switch(status)
     {
-        case AVAILABLE:
-            // Set Green
-            button->setStyleSheet("font: bold;background-color : green;");
-            break;
+    case AVAILABLE:
+        // Set Green
+        button->setStyleSheet("font: bold;background-color : green;");
+        break;
 
-        case OCCUPIED:
-            // Set Red
-            button->setStyleSheet("font: bold;background-color : red");
-            break;
+    case OCCUPIED:
+        // Set Red
+        button->setStyleSheet("font: bold;background-color : red");
+        break;
 
-        case DIRTY:
-            // Set Yellow
-            button->setStyleSheet("font: bold;background-color : yellow;");
-            break;
+    case DIRTY:
+        // Set Yellow
+        button->setStyleSheet("font: bold;background-color : yellow;");
+        break;
 
-        case MAINTENANCE:
-            // Set Orange
-            button->setStyleSheet("font: bold;background-color : orange;");
-            break;
+    case MAINTENANCE:
+        // Set Orange
+        button->setStyleSheet("font: bold;background-color : orange;");
+        break;
 
-        default:
-            // No Change -- defualt Grey
-            break;
+    default:
+        // No Change -- defualt Grey
+        break;
     }
 }
 
 void DashBoard::setRoomStatusButtons()
 {
-        srand (time(NULL));     // get rid of
-        setRoomButton(10, ui->RoomButton_10);
-        setRoomButton(11, ui->RoomButton_11);
-        setRoomButton(12, ui->RoomButton_12);
-        setRoomButton(13, ui->RoomButton_13);
-        setRoomButton(14, ui->RoomButton_14);
-        setRoomButton(15, ui->RoomButton_15);
-        setRoomButton(16, ui->RoomButton_16);
-        setRoomButton(17, ui->RoomButton_17);
-        setRoomButton(18, ui->RoomButton_18);
-        setRoomButton(19, ui->RoomButton_19);
-        setRoomButton(20, ui->RoomButton_20);
-        setRoomButton(21, ui->RoomButton_21);
-        setRoomButton(22, ui->RoomButton_22);
-        setRoomButton(23, ui->RoomButton_23);
-        setRoomButton(24, ui->RoomButton_24);
+    srand (time(NULL));     // get rid of
+    setRoomButton(10, ui->RoomButton_10);
+    setRoomButton(11, ui->RoomButton_11);
+    setRoomButton(12, ui->RoomButton_12);
+    setRoomButton(13, ui->RoomButton_13);
+    setRoomButton(14, ui->RoomButton_14);
+    setRoomButton(15, ui->RoomButton_15);
+    setRoomButton(16, ui->RoomButton_16);
+    setRoomButton(17, ui->RoomButton_17);
+    setRoomButton(18, ui->RoomButton_18);
+    setRoomButton(19, ui->RoomButton_19);
+    setRoomButton(20, ui->RoomButton_20);
+    setRoomButton(21, ui->RoomButton_21);
+    setRoomButton(22, ui->RoomButton_22);
+    setRoomButton(23, ui->RoomButton_23);
+    setRoomButton(24, ui->RoomButton_24);
 }
 
 void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
@@ -434,14 +455,14 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
     QSqlQuery* qry = new QSqlQuery(db);
     if( qry->prepare("SELECT Status FROM Rooms WHERE RoomID IS " + QString::number(roomNumber) + ";"))
     {
-       qry->exec();
-       qry->first();
-       status = qry->value(0).toInt();
-       qDebug() << " successfully returned.";
+        qry->exec();
+        qry->first();
+        status = qry->value(0).toInt();
+        qDebug() << " successfully returned.";
     } else {
-       QSqlError error = qry->lastError();
-       qDebug() << "Failed to prepare query.";
-       qDebug() << "Database says: " + error.databaseText();
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
 
     if(status == AVAILABLE && selectedDay != QDate::currentDate().toString())
@@ -456,7 +477,7 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
     else if(status == DIRTY)
     {
         details += QString::number(roomNumber)+ " - DIRTY </h1>\n"     // CAPABILITY 1
-        "<p>This room is currently dirty.</p>"
+                "<p>This room is currently dirty.</p>"
         "<p>Do you want to make the room available?</p>"
         "</div></main></body>";
         ui->changeAvailable->show();
@@ -465,7 +486,7 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
     else if(status == MAINTENANCE)
     {
         details += QString::number(roomNumber)+ " - DIRTY </h1>\n"     // CAPABILITY 1
-        "<p>This room is currently under maintenance.</p>"
+                "<p>This room is currently under maintenance.</p>"
         "<p>Do you want to make the room available?</p>"
         "</div></main></body>";
         ui->changeAvailable->show();
@@ -477,20 +498,20 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
 
 void DashBoard::updateTable(QString rawString)
 {
-     QSqlQueryModel* model = new QSqlQueryModel;
-     QSqlQuery* qry = new QSqlQuery(db);
-     if( qry->prepare(rawString) )
-     {
+    QSqlQueryModel* model = new QSqlQueryModel;
+    QSqlQuery* qry = new QSqlQuery(db);
+    if( qry->prepare(rawString) )
+    {
         qry->exec();
         model->setQuery(*qry);
         ui->DataTable->setModel(model);
         qDebug() << model->rowCount() << " rows returned.";
-     } else {
+    } else {
         QSqlError error = qry->lastError();
         qDebug() << "Failed to prepare query.";
         qDebug() << "Database says: " + error.databaseText();
-     }
-     ui->DataTable->resizeColumnsToContents();
+    }
+    ui->DataTable->resizeColumnsToContents();
 }
 
 // Room status buttons for Capabillity one
@@ -605,12 +626,12 @@ void DashBoard::on_changeAvailable_clicked()
     QSqlQuery* qry = new QSqlQuery(db);
     if( qry->prepare("UPDATE Rooms SET Status = 0 WHERE RoomID = " + QString::number(roomNum) + ";"))
     {
-       qry->exec();
-       qDebug() << " successfully returned.";
+        qry->exec();
+        qDebug() << " successfully returned.";
     } else {
-       QSqlError error = qry->lastError();
-       qDebug() << "Failed to prepare query.";
-       qDebug() << "Database says: " + error.databaseText();
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
     }
 
     setRoomButton(roomNum, roomPtr);
@@ -718,7 +739,7 @@ void DashBoard::on_DataTable_doubleClicked(const QModelIndex &index)
 
 void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
 {
-         qDebug() << "Right clicked.  Displaying context menu.";
+    qDebug() << "Right clicked.  Displaying context menu.";
     if( resEdit )
     {
         qDebug() << "Reservation editting menu.";
@@ -731,6 +752,40 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
         menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
         ResID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
         connect(del, &QAction::triggered, this, &DashBoard::deleteReservation);
+    }
+    else if( checkin )
+    {
+        qDebug() << "Check-in menu.";
+        QModelIndex index= ui->DataTable->indexAt(pos);
+
+        QMenu *menu=new QMenu(this);
+        QAction* Checkin= new QAction("Check-in Guest", this);
+
+        menu->addAction(Checkin);
+        Checkin->setStatusTip("Check-in the selected guest");
+        Checkin->setCheckable(true);
+
+        menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
+        roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
+        connect(Checkin, &QAction::toggled, this, &DashBoard::checkInGuest);
+    }
+    else if( checkout )
+    {
+        qDebug() << "Checkout menu.";
+        QModelIndex index= ui->DataTable->indexAt(pos);
+
+        ResID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),8)).toInt();
+
+        QMenu *menu=new QMenu(this);
+        QAction* Checkout= new QAction("Check Out Guest", this);
+
+        menu->addAction(Checkout);
+        Checkout->setStatusTip("Check out the selected guest");
+        Checkout->setCheckable(true);
+
+        menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
+        roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
+        connect(Checkout, &QAction::toggled, this, &DashBoard::checkOutGuest);
     }
     else if( hkEdit )
     {
@@ -777,26 +832,26 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
         QSqlQuery* qry = new QSqlQuery(db);
         int set = 0;
         if(qry->prepare("SELECT Status FROM Rooms WHERE RoomID = " + QString::number(roomID)) )        {
-           qry->exec();
-           qry->first();
-           set = qry->value(0).toInt();
-           qDebug() << QString::number(set);
-           if(set != 0)
-           {
-               qDebug() << "Present 'Make room unavaible' option";
-               QAction* makeUn= new QAction("Make room unavaible", this);
+            qry->exec();
+            qry->first();
+            set = qry->value(0).toInt();
+            qDebug() << QString::number(set);
+            if(set != 0)
+            {
+                qDebug() << "Present 'Make room unavaible' option";
+                QAction* makeUn= new QAction("Make room unavaible", this);
 
-               menu->addSection("Availability");
-               menu->addAction(makeUn);
-               makeUn->setStatusTip("Make the selected room unavaible");
-               makeUn->setCheckable(true);
+                menu->addSection("Availability");
+                menu->addAction(makeUn);
+                makeUn->setStatusTip("Make the selected room unavaible");
+                makeUn->setCheckable(true);
 
-               connect(makeUn, &QAction::toggled, this, &DashBoard::makeRoomUnavailable);
-           }
-           else
-           {
-              qDebug() << "The selected room is already unavailable";
-           }
+                connect(makeUn, &QAction::toggled, this, &DashBoard::makeRoomUnavailable);
+            }
+            else
+            {
+                qDebug() << "The selected room is already unavailable";
+            }
         }
 
     }
@@ -820,11 +875,11 @@ void DashBoard::deleteReservation()
         QSqlQuery* qry = new QSqlQuery(db);
         if( qry->prepare("DELETE FROM Reservations WHERE ResID = " + QString::number(ResID)) )
         {
-           qry->exec();
+            qry->exec();
         } else {
-           QSqlError error = qry->lastError();
-           qDebug() << "Failed to prepare query.";
-           qDebug() << "Database says: " + error.databaseText();
+            QSqlError error = qry->lastError();
+            qDebug() << "Failed to prepare query.";
+            qDebug() << "Database says: " + error.databaseText();
         }
 
         qDebug() << "Reservation " + QString::number(ResID) + " has been deleted";
@@ -840,27 +895,27 @@ void DashBoard::deleteReservation()
 
 void DashBoard::bathEdit()
 {
-//df
+    //df
     //edit here
     QSqlQuery* qry = new QSqlQuery(db);
     int set = 0;
     if(qry->prepare("SELECT Bathroom FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
-       qry->exec();
-       qry->first();
-       set = qry->value(0).toInt();
+        qry->exec();
+        qry->first();
+        set = qry->value(0).toInt();
 
 
-       if(set == 0) {
-           qry->prepare("UPDATE Rooms SET Bathroom = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " requires bathroom cleaning";
-       }
-       else {
-           qry->prepare("UPDATE Rooms SET Bathroom = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " does not require bathroom cleaning";
-       }
-       qry->exec();
-       updateTable("SELECT * FROM Rooms");
+        if(set == 0) {
+            qry->prepare("UPDATE Rooms SET Bathroom = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " requires bathroom cleaning";
+        }
+        else {
+            qry->prepare("UPDATE Rooms SET Bathroom = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " does not require bathroom cleaning";
+        }
+        qry->exec();
+        updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -878,21 +933,21 @@ void DashBoard::towelEdit()
     int set = 0;
     if(qry->prepare("SELECT Towels FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
-       qry->exec();
-       qry->first();
-       set = qry->value(0).toInt();
+        qry->exec();
+        qry->first();
+        set = qry->value(0).toInt();
 
 
-       if(set == 0) {
-           qry->prepare("UPDATE Rooms SET Towels = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " requires towels";
-       }
-       else {
-           qry->prepare("UPDATE Rooms SET Towels = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " does not require towels";
-       }
-       qry->exec();
-       updateTable("SELECT * FROM Rooms");
+        if(set == 0) {
+            qry->prepare("UPDATE Rooms SET Towels = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " requires towels";
+        }
+        else {
+            qry->prepare("UPDATE Rooms SET Towels = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " does not require towels";
+        }
+        qry->exec();
+        updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -909,21 +964,21 @@ void DashBoard::vacuumEdit()
     int set = 0;
     if(qry->prepare("SELECT Vacuum FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
-       qry->exec();
-       qry->first();
-       set = qry->value(0).toInt();
+        qry->exec();
+        qry->first();
+        set = qry->value(0).toInt();
 
 
-       if(set == 0) {
-           qry->prepare("UPDATE Rooms SET Vacuum = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " requires vacuuming";
-       }
-       else {
-           qry->prepare("UPDATE Rooms SET Vacuum = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " does not require vacuuming";
-       }
-       qry->exec();
-       updateTable("SELECT * FROM Rooms");
+        if(set == 0) {
+            qry->prepare("UPDATE Rooms SET Vacuum = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " requires vacuuming";
+        }
+        else {
+            qry->prepare("UPDATE Rooms SET Vacuum = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " does not require vacuuming";
+        }
+        qry->exec();
+        updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -940,21 +995,21 @@ void DashBoard::dustEdit()
     int set = 0;
     if(qry->prepare("SELECT Dusting FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
-       qry->exec();
-       qry->first();
-       set = qry->value(0).toInt();
+        qry->exec();
+        qry->first();
+        set = qry->value(0).toInt();
 
 
-       if(set == 0) {
-           qry->prepare("UPDATE Rooms SET Dusting = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " requires dusting";
-       }
-       else {
-           qry->prepare("UPDATE Rooms SET Dusting = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " does not require dusting";
-       }
-       qry->exec();
-       updateTable("SELECT * FROM Rooms");
+        if(set == 0) {
+            qry->prepare("UPDATE Rooms SET Dusting = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " requires dusting";
+        }
+        else {
+            qry->prepare("UPDATE Rooms SET Dusting = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " does not require dusting";
+        }
+        qry->exec();
+        updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -971,21 +1026,21 @@ void DashBoard::elecEdit()
     int set = 0;
     if(qry->prepare("SELECT Electronics FROM Rooms WHERE RoomID = " + QString::number(roomID)) )
     {
-       qry->exec();
-       qry->first();
-       set = qry->value(0).toInt();
+        qry->exec();
+        qry->first();
+        set = qry->value(0).toInt();
 
 
-       if(set == 0) {
-           qry->prepare("UPDATE Rooms SET Electronics = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " requires electronic maintenance";
-       }
-       else {
-           qry->prepare("UPDATE Rooms SET Electronics = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
-           qDebug() << "Room " + QString::number(roomID) + " does not require electronic maintenance";
-       }
-       qry->exec();
-       updateTable("SELECT * FROM Rooms");
+        if(set == 0) {
+            qry->prepare("UPDATE Rooms SET Electronics = " + QString::number(1) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " requires electronic maintenance";
+        }
+        else {
+            qry->prepare("UPDATE Rooms SET Electronics = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+            qDebug() << "Room " + QString::number(roomID) + " does not require electronic maintenance";
+        }
+        qry->exec();
+        updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -999,19 +1054,18 @@ void DashBoard::elecEdit()
 void DashBoard::makeRoomUnavailable()
 {
     QSqlQuery* qry = new QSqlQuery(db);
-    int set = 0;
 
     if(qry->prepare("SELECT Status FROM Rooms WHERE RoomID = " + QString::number(roomID)))
     {
-       qry->exec();
-       qry->first();
+        qry->exec();
+        qry->first();
 
-       //  GRANT
-       // SQL query to make the room unavaiable here
-       qry->prepare("UPDATE Rooms SET Status = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
+        //  GRANT
+        // SQL query to make the room unavaiable here
+        qry->prepare("UPDATE Rooms SET Status = " + QString::number(0) + " WHERE RoomID = " + QString::number(roomID));
 
-       qry->exec();
-       updateTable("SELECT * FROM Rooms");
+        qry->exec();
+        updateTable("SELECT * FROM Rooms");
 
     }
     else
@@ -1029,4 +1083,74 @@ void DashBoard::on_makeRes_clicked()
     loadMePls->setFixedSize(loadMePls->size());
     loadMePls->setModal(1);
     loadMePls->show();
+}
+
+void DashBoard::on_checkin_clicked()
+{
+    checkin = true;
+    checkout = false;
+    qDebug() << "Searching for reservations ready for check-in on " << QDate::currentDate().toString(Qt::ISODate);
+    updateTable("SELECT * FROM Reservations WHERE CheckIn = '" + QDate::currentDate().toString(Qt::ISODate) + "'");
+}
+
+void DashBoard::on_checkout_clicked()
+{
+    checkin = false;
+    checkout = true;
+    updateTable("SELECT * FROM Rooms WHERE Status = 1");
+}
+
+void DashBoard::checkOutGuest()
+{
+    qDebug() << "Checking out guest with reservation ID: " + QString::number(ResID);
+
+    // Update the ResID in Rooms to NULL
+    QSqlQuery* qry = new QSqlQuery(db);
+    // Create/ prepare query statement
+    if( qry->prepare(" "))
+    {
+        qry->exec();
+        qry->first();
+        //CusID = qry->value(0).toInt();
+        qDebug() << " successfully returned.";
+    } else {
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
+    }
+}
+
+void DashBoard::checkInGuest()
+{
+    qDebug() << "Checking in guest with reservation ID: " + QString::number(ResID);
+
+    // Update Rooms with the new ResID, where rooms.roomID = reservations.roomID
+    QSqlQuery* qry = new QSqlQuery(db);
+    // Create/ prepare query statement
+    if( qry->prepare(" "))
+    {
+        qry->exec();
+        qry->first();
+        //ResID = qry->value(0).toInt();
+        qDebug() << " successfully returned.";
+    } else {
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
+    }
+}
+
+void DashBoard::on_walkin_clicked()
+{
+    Reservations *loadMeHarder = new Reservations(&db, QDate::currentDate().toString(Qt::ISODate));
+    // Disable window resizing
+    loadMeHarder->setFixedSize(loadMeHarder->size());
+    loadMeHarder->setModal(1);
+    loadMeHarder->show();
+
+    /*
+     * get the latest ResID (should be the reservation that was just made in the reservation form)
+     *
+     * checkin the guest with the ResID
+     */
 }
