@@ -28,8 +28,9 @@ private slots:
     void on_back_clicked();
 
 private:
+    int cusId;
     Ui::GuestInfo *ui;
-
+    QSqlDatabase* dbRef; // Reference to the db to be able to execute queries
     void setTextFields(QSqlDatabase* db, int id);
 };
 
