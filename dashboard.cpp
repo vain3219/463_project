@@ -89,7 +89,28 @@ void DashBoard::on_DailyButton_clicked()
     hkEdit = false;
     // Hide unecessary GUI elements
     setBlankPage();
-    updateTable("select * from Customer;");
+    updateTable("select Rooms.RoomID, Customer.FName, Customer.LName, Reservations.CheckIn, Reservations.Checkout, Payments.Balance "
+"from Rooms "
+"INNER JOIN Customer ON Customer.CusID = Reservations.CusID "
+"INNER JOIN Reservations ON Reservations.ResID = Rooms.ResID "
+"INNER JOIN Payments ON Payments.ResID = Rooms.ResID "
+"where Status = 1");
+
+    double total = 0;
+    QSqlQuery* qry = new QSqlQuery(db);
+    if( qry->prepare("SELECT sum(Rate) FROM RoomTypes INNER JOIN Reservations ON RoomTypes.Type = Reservations.RoomType INNER JOIN Rooms ON Rooms.ResID = Reservations.ResID where status = 1 ;"))
+    {
+       qry->exec();
+       qry->first();
+       total = qry->value(0).toInt();
+       qDebug() << " successfully returned.";
+    } else {
+       QSqlError error = qry->lastError();
+       qDebug() << "Failed to prepare query.";
+       qDebug() << "Database says: " + error.databaseText();
+    }
+    ui->EarningsLabel->show();
+    ui->EarningsLabel->setText("Today's Earnings: $" + QString::number(total));
 }
 
 void DashBoard::on_GuestsButton_clicked()
@@ -114,7 +135,7 @@ void DashBoard::on_HousekeepingButton_clicked()
 
 void DashBoard::on_InfoButton_clicked()
 {
-    guestEdit = false;
+    guestEdit = true;
     resEdit = false;
     hkEdit = false;
     // Hide unecessary GUI elements
@@ -218,7 +239,7 @@ void DashBoard::on_SubmitButon_clicked()
         qDebug() << "Customer found.";
         cusID = qry->value(0).toInt();
         // add "Reservations.roomNum" to the query
-        updateTable("SELECT Customer.FName, Customer.LName, Customer.Phone, Customer.Address, Reservations.CheckIn, Reservations.Checkout "
+        updateTable("SELECT Customer.CusID, Customer.FName, Customer.LName, Customer.Phone, Customer.Address, Reservations.CheckIn, Reservations.Checkout "
             "FROM Reservations INNER JOIN Customer ON Reservations.CusID = Customer.CusID WHERE Reservations.CusID = " + QString::number(cusID));
     } else {
         QSqlError error = qry->lastError();
@@ -256,6 +277,7 @@ void DashBoard::setBlankPage() {
     ui->changeAvailable->hide();
     ui->doNothing->hide();
     ui->makeRes->hide();
+    ui->EarningsLabel->hide();
     if(ui->stackedWidgetSR->currentIndex() != 0)
     {
         ui->stackedWidgetSR->setCurrentWidget(ui->BlankPage);

@@ -597,6 +597,24 @@
      <zorder>DataTable</zorder>
     </widget>
    </widget>
+   <widget class="QLabel" name="EarningsLabel">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>660</y>
+      <width>301</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Today's Earnings: $ 1230.67</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -604,7 +622,7 @@
      <x>0</x>
      <y>0</y>
      <width>1205</width>
-     <height>26</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
