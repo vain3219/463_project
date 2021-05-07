@@ -41,7 +41,7 @@ bool DashBoard::databaseInit()
     // Establish connection with SQLite Database
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("AntaresRDB.db");
-    //    db.setDatabaseName("C://Users//Grant//Downloads//AntaresRDB.db");
+    db.setDatabaseName("A://School//CSUF//CPSC//463//project//463_project//AntaresRDB.db");
     if (!db.open())
     {
         qDebug() << "Error: connection with database fail";
@@ -468,11 +468,17 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
     if(status == AVAILABLE && selectedDay != QDate::currentDate().toString())
     {
         // CAPABILITY 6 BUTTON PRESSED
+        QMetaObject::invokeMethod(ui->InfoButton, "clicked");
+        QMetaObject::invokeMethod(ui->checkin, "clicked");
+
         ui->makeRes->show();
     }
     else if(status == OCCUPIED)
     {
         // CAPABILITY 6 BUTTON PRESSED
+        QMetaObject::invokeMethod(ui->InfoButton, "clicked");
+        QMetaObject::invokeMethod(ui->checkout, "clicked");
+
     }
     else if(status == DIRTY)
     {
@@ -766,7 +772,9 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
         Checkin->setCheckable(true);
 
         menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
-        roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
+        ResID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
+        roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),6)).toInt();
+
         connect(Checkin, &QAction::toggled, this, &DashBoard::checkInGuest);
     }
     else if( checkout )
@@ -785,6 +793,8 @@ void DashBoard::on_DataTable_customContextMenuRequested(const QPoint &pos)
 
         menu->popup(ui->DataTable->viewport()->mapToGlobal(pos));
         roomID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),0)).toInt();
+        ResID = ui->DataTable->model()->data(ui->DataTable->model()->index(index.row(),8)).toInt();
+
         connect(Checkout, &QAction::toggled, this, &DashBoard::checkOutGuest);
     }
     else if( hkEdit )
@@ -1107,7 +1117,7 @@ void DashBoard::checkOutGuest()
     // Update the ResID in Rooms to NULL
     QSqlQuery* qry = new QSqlQuery(db);
     // Create/ prepare query statement
-    if( qry->prepare(" "))
+    if( qry->prepare("UPDATE Rooms SET ResID = " + QString::number(ResID) + ", Status = 2 WHERE RoomID = " + QString::number(roomID)))
     {
         qry->exec();
         qry->first();
@@ -1126,8 +1136,10 @@ void DashBoard::checkInGuest()
 
     // Update Rooms with the new ResID, where rooms.roomID = reservations.roomID
     QSqlQuery* qry = new QSqlQuery(db);
+    qDebug() << "values: " << QString::number(roomID) << " / " << QString::number(roomNum) << " / " << QString::number(ResID);
+
     // Create/ prepare query statement
-    if( qry->prepare(" "))
+    if( qry->prepare("UPDATE Rooms SET ResID = " + QString::number(ResID) + ", Status = 1 WHERE RoomID = " + QString::number(roomID)))
     {
         qry->exec();
         qry->first();
@@ -1153,4 +1165,19 @@ void DashBoard::on_walkin_clicked()
      *
      * checkin the guest with the ResID
      */
+    QSqlQuery* qry = new QSqlQuery(db);
+
+    qDebug() << qry->lastQuery();
+
+    if( qry->prepare("UPDATE Rooms SET ResID = " + QString::number(ResID) + ", Status = 1 WHERE RoomID = " + QString::number(roomID)))
+    {
+        qry->exec();
+        qry->first();
+        //ResID = qry->value(0).toInt();
+        qDebug() << " successfully returned.";
+    } else {
+        QSqlError error = qry->lastError();
+        qDebug() << "Failed to prepare query.";
+        qDebug() << "Database says: " + error.databaseText();
+    }
 }
