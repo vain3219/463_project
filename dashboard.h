@@ -131,6 +131,10 @@ private slots:
 
     void on_walkin_clicked();
 
+    void on_checkOutRoom_clicked();
+
+    void on_checkInRoom_clicked();
+
 private:
     Ui::DashBoard *ui;
     QSqlDatabase db;

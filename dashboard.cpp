@@ -41,7 +41,7 @@ bool DashBoard::databaseInit()
     // Establish connection with SQLite Database
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("AntaresRDB.db");
-    db.setDatabaseName("A://School//CSUF//CPSC//463//project//463_project//AntaresRDB.db");
+    //db.setDatabaseName("A://School//CSUF//CPSC//463//project//463_project//AntaresRDB.db");
     if (!db.open())
     {
         qDebug() << "Error: connection with database fail";
@@ -299,6 +299,8 @@ void DashBoard::setBlankPage() {
     ui->doNothing->hide();
     ui->makeRes->hide();
     ui->EarningsLabel->hide();
+    ui->checkOutRoom->hide();
+    ui->checkInRoom->hide();
     if(ui->stackedWidgetSR->currentIndex() != 0)
     {
         ui->stackedWidgetSR->setCurrentWidget(ui->BlankPage);
@@ -467,21 +469,28 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
 
     if(status == AVAILABLE && selectedDay != QDate::currentDate().toString())
     {
-        // CAPABILITY 6 BUTTON PRESSED
-        QMetaObject::invokeMethod(ui->InfoButton, "clicked");
-        QMetaObject::invokeMethod(ui->checkin, "clicked");
-
+        ui->checkInRoom->show();
+        ui->checkOutRoom->hide();
         ui->makeRes->show();
+        details += QString::number(roomNumber)+ " - AVAILABLE </h1>\n"     // CAPABILITY 1
+                "<p>This room is currently available.</p>"
+        "<p>The room is ready for a guest to Check-In</p>"
+        "</div></main></body>";
     }
     else if(status == OCCUPIED)
     {
-        // CAPABILITY 6 BUTTON PRESSED
-        QMetaObject::invokeMethod(ui->InfoButton, "clicked");
-        QMetaObject::invokeMethod(ui->checkout, "clicked");
-
+        ui->checkOutRoom->show();
+        ui->checkInRoom->hide();
+        details += QString::number(roomNumber)+ " - OCCUPIED </h1>\n"     // CAPABILITY 1
+                "<p>This room is currently occupied.</p>"
+        "<p>Shall we evict this poor soul, Master?</p>"
+        "</div></main></body>";
     }
     else if(status == DIRTY)
     {
+        ui->checkOutRoom->hide();
+        ui->checkInRoom->hide();
+        ui->makeRes->show();
         details += QString::number(roomNumber)+ " - DIRTY </h1>\n"     // CAPABILITY 1
                 "<p>This room is currently dirty.</p>"
         "<p>Do you want to make the room available?</p>"
@@ -491,7 +500,10 @@ void DashBoard::setRoomDetails(int roomNumber, QPushButton* button)
     }
     else if(status == MAINTENANCE)
     {
-        details += QString::number(roomNumber)+ " - DIRTY </h1>\n"     // CAPABILITY 1
+        ui->checkOutRoom->hide();
+        ui->checkInRoom->hide();
+        ui->makeRes->show();
+        details += QString::number(roomNumber)+ " - UNDER MAINTENANCE </h1>\n"     // CAPABILITY 1
                 "<p>This room is currently under maintenance.</p>"
         "<p>Do you want to make the room available?</p>"
         "</div></main></body>";
@@ -1099,8 +1111,8 @@ void DashBoard::on_checkin_clicked()
 {
     checkin = true;
     checkout = false;
-    qDebug() << "Searching for reservations ready for check-in on " << QDate::currentDate().toString(Qt::ISODate);
-    updateTable("SELECT * FROM Reservations WHERE CheckIn = '" + QDate::currentDate().toString(Qt::ISODate) + "'");
+    qDebug() << "Searching for reservations ready for check-in on or after " << QDate::currentDate().toString(Qt::ISODate);
+    updateTable("SELECT * FROM Reservations WHERE CheckIn >= '" + QDate::currentDate().toString(Qt::ISODate) + "' ORDER BY CheckIn");
 }
 
 void DashBoard::on_checkout_clicked()
@@ -1180,4 +1192,18 @@ void DashBoard::on_walkin_clicked()
         qDebug() << "Failed to prepare query.";
         qDebug() << "Database says: " + error.databaseText();
     }
+}
+
+void DashBoard::on_checkOutRoom_clicked()
+{
+    // CAPABILITY 6 BUTTON PRESSED
+    QMetaObject::invokeMethod(ui->InfoButton, "clicked");
+    QMetaObject::invokeMethod(ui->checkout, "clicked");
+}
+
+void DashBoard::on_checkInRoom_clicked()
+{
+    // CAPABILITY 6 BUTTON PRESSED
+    QMetaObject::invokeMethod(ui->InfoButton, "clicked");
+    QMetaObject::invokeMethod(ui->checkin, "clicked");
 }

@@ -166,7 +166,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="RoomStatusPage">
      <widget class="QPushButton" name="RoomButton_10">
@@ -426,6 +426,32 @@
       </property>
       <property name="text">
        <string>Make a Reservation</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="checkOutRoom">
+      <property name="geometry">
+       <rect>
+        <x>860</x>
+        <y>630</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Check Out</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="checkInRoom">
+      <property name="geometry">
+       <rect>
+        <x>860</x>
+        <y>630</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Check-In</string>
       </property>
      </widget>
     </widget>

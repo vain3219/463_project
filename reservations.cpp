@@ -89,6 +89,7 @@ void Reservations::on_ConfirmButton_clicked()
     QSqlError error;
     QString IDNum1 = ui->IDNumField->text();
 
+    CusID = 0;
     insertQuery = "select CusID from Customer where( IDNum = '" + IDNum1 + "')";
     if(qry->prepare(insertQuery))
     {
@@ -96,9 +97,9 @@ void Reservations::on_ConfirmButton_clicked()
         qry->first();
         CusID = qry->value(0).toInt();
         // Customer is not in the databse -- add them
-        qDebug() << QString::number(qry->numRowsAffected()) + " Customer records found with IDNum " + IDNum1 + " CusID = "+ QString::number(CusID);
-        if(qry->numRowsAffected() == 0)
+        if(CusID == 0)
         {
+            qDebug() << " Customer records found with IDNum " + IDNum1 + " CusID = "+ QString::number(CusID);
             // Create query String
             insertQuery = "INSERT INTO Customer (FName, LName, IDNum, IDState, LicensePlate, Address, Phone, Email) values (" + FName + "," + LName + "," + IDNum + "," + IDState + "," + LicensePlate + "," + Address + "," + Phone + "," + Email + ")";
 
@@ -133,7 +134,7 @@ void Reservations::on_ConfirmButton_clicked()
         else
             // If the customer exists in the database
         {
-            CusID = qry->value(0).toInt();
+           //
         }
     } else {
         error = qry->lastError();
@@ -229,19 +230,36 @@ int Reservations::FindAvailableRoomOfType(int type)
     QString query = "SELECT roomID FROM Rooms WHERE type = " + QString::number(type);
     QSqlQuery* qry = new QSqlQuery(ref);
 
-    if( qry->prepare(query))
+    int ar1[] = {10,11,12,13,14};
+    int ar2[] = {15,16,17,18};
+    int ar3[] = {19,20,21};
+    int ar4[] = {22,23,24};
+    int max = 0;
+    int x = 0;
+    switch (type)
     {
-        qry->exec();
-        qry->first();
-        qDebug() << " successfully returned.";
-    } else {
-        QSqlError error = qry->lastError();
-        qDebug() << "Failed to prepare query.";
-        qDebug() << "Database says: " + error.databaseText();
-    }
+    case 0:
+        max = 5;
+        x = QRandomGenerator::global()->bounded(0, max - 1);
+        return ar1[x];
+        break;
 
-    int x = QRandomGenerator::global()->bounded(0, qry->numRowsAffected() - 1);
-    for(int i = 0; i < x; i++)
-        qry->next();
-    return qry->value(0).toInt();
+    case 1:
+        max = 4;
+        x = QRandomGenerator::global()->bounded(0, max - 1);
+        return ar2[x];
+        break;
+
+    case 2:
+        max = 3;
+        x = QRandomGenerator::global()->bounded(0, max - 1);
+        return ar3[x];
+        break;
+
+    case 3:
+        max = 3;
+        x = QRandomGenerator::global()->bounded(0, max - 1);
+        return ar4[x];
+        break;
+    }
 }
