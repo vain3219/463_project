@@ -226,10 +226,6 @@ void Reservations::on_CancelButton_clicked()
 
 int Reservations::FindAvailableRoomOfType(int type)
 {
-
-    QString query = "SELECT roomID FROM Rooms WHERE type = " + QString::number(type);
-    QSqlQuery* qry = new QSqlQuery(ref);
-
     int ar1[] = {10,11,12,13,14};
     int ar2[] = {15,16,17,18};
     int ar3[] = {19,20,21};
